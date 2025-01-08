@@ -44,6 +44,7 @@ function preload() {
 	font = loadFont('adlib.ttf');
 
 	// sound preload
+	/* 
 	bgm = loadSound("../sfx/ChillMenu_Loopable.wav"); bgm.setVolume(0.2);
 	ambiance = loadSound("../sfx/ambiance.wav"); ambiance.setVolume(0.6);
 	liftbell = loadSound("../sfx/liftbell.wav"); liftbell.setVolume(0.1);
