@@ -44,21 +44,21 @@ function preload() {
 	font = loadFont('adlib.ttf');
 
 	// sound preload
-	bgm = loadSound("./sfx/ChillMenu_Loopable.wav"); bgm.setVolume(0.2);
-	ambiance = loadSound("./sfx/ambiance.wav"); ambiance.setVolume(0.6);
-	liftbell = loadSound("./sfx/liftbell.wav"); liftbell.setVolume(0.1);
-	spawnCheesesfx = loadSound("./sfx/spawnCheese.wav"); spawnCheesesfx.setVolume(0.1);
-	crunch = loadSound("./sfx/crunch.wav"); crunch.setVolume(0.1);
-    beesfx = loadSound("./sfx/bees.wav"); beesfx.setVolume(0.04);
-	crow = loadSound("./sfx/crow.wav"); crow.setVolume(0.04);
-	sloth = loadSound("./sfx/sloth.wav"); sloth.setVolume(0.04);
-	wolf = loadSound("./sfx/wolfhowl.wav"); wolf.setVolume(0.04);
-	weaselsfx = loadSound("./sfx/weasel.wav"); weaselsfx.setVolume(0.04);
-	lionsfx = loadSound("./sfx/lion.wav"); lionsfx.setVolume(0.1);
-	catsfx = loadSound("./sfx/kitty.wav"); catsfx.setVolume(0.04);
-	bubblessfx = loadSound("./sfx/bubbles.mp3"); bubblessfx.setVolume(0.04);
-	peacocksfx = loadSound("./sfx/peacock.mp3"); peacocksfx.setVolume(0.1);
-	squeak1 = loadSound("./sfx/squeak1.wav"); squeak1.setVolume(0.6); squeak2 = loadSound("./sfx/squeak2.wav"); squeak2.setVolume(0.6); squeak3 = loadSound("./sfx/squeak3.wav"); squeak3.setVolume(0.6); squeak4 = loadSound("./sfx/squeak4.wav"); squeak4.setVolume(0.6);
+	bgm = loadSound("../sfx/ChillMenu_Loopable.wav"); bgm.setVolume(0.2);
+	ambiance = loadSound("../sfx/ambiance.wav"); ambiance.setVolume(0.6);
+	liftbell = loadSound("../sfx/liftbell.wav"); liftbell.setVolume(0.1);
+	spawnCheesesfx = loadSound("../sfx/spawnCheese.wav"); spawnCheesesfx.setVolume(0.1);
+	crunch = loadSound("../sfx/crunch.wav"); crunch.setVolume(0.1);
+    beesfx = loadSound("../sfx/bees.wav"); beesfx.setVolume(0.04);
+	crow = loadSound("../sfx/crow.wav"); crow.setVolume(0.04);
+	sloth = loadSound("../sfx/sloth.wav"); sloth.setVolume(0.04);
+	wolf = loadSound("../sfx/wolfhowl.wav"); wolf.setVolume(0.04);
+	weaselsfx = loadSound("../sfx/weasel.wav"); weaselsfx.setVolume(0.04);
+	lionsfx = loadSound("../sfx/lion.wav"); lionsfx.setVolume(0.1);
+	catsfx = loadSound("../sfx/kitty.wav"); catsfx.setVolume(0.04);
+	bubblessfx = loadSound("../sfx/bubbles.mp3"); bubblessfx.setVolume(0.04);
+	peacocksfx = loadSound("../sfx/peacock.mp3"); peacocksfx.setVolume(0.1);
+	squeak1 = loadSound("../sfx/squeak1.wav"); squeak1.setVolume(0.6); squeak2 = loadSound("../sfx/squeak2.wav"); squeak2.setVolume(0.6); squeak3 = loadSound("../sfx/squeak3.wav"); squeak3.setVolume(0.6); squeak4 = loadSound("../sfx/squeak4.wav"); squeak4.setVolume(0.6);
 	/* step1 = loadSound("../sfx/carpet1.ogg"); step1.setVolume(0.09); step2 = loadSound("../sfx/carpet2.ogg"); step2.setVolume(0.09); step3 = loadSound("../sfx/carpet3.ogg"); step3.setVolume(0.09); step4 = loadSound("../sfx/carpet4.ogg"); step4.setVolume(0.09); step5 = loadSound("../sfx/carpet5.ogg"); step5.setVolume(0.09); */
 
 	// lyft_animations preload [ 0-7 ]
