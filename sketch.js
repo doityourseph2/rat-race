@@ -43,8 +43,23 @@ function LiftRandomise() {
 function preload() {
 	font = loadFont('adlib.ttf');
 
-	
-	/* step1 = loadSound("../sfx/carpet1.ogg"); step1.setVolume(0.09); step2 = loadSound("../sfx/carpet2.ogg"); step2.setVolume(0.09); step3 = loadSound("../sfx/carpet3.ogg"); step3.setVolume(0.09); step4 = loadSound("../sfx/carpet4.ogg"); step4.setVolume(0.09); step5 = loadSound("../sfx/carpet5.ogg"); step5.setVolume(0.09); */
+	// sound preload
+	bgm = loadSound("sfx/ChillMenu_Loopable.wav"); bgm.setVolume(0.2);
+	ambiance = loadSound("sfx/ambiance.wav"); ambiance.setVolume(0.6);
+	liftbell = loadSound("sfx/liftbell.wav"); liftbell.setVolume(0.1);
+	spawnCheesesfx = loadSound("sfx/spawnCheese.wav"); spawnCheesesfx.setVolume(0.1);
+	crunch = loadSound("sfx/crunch.wav"); crunch.setVolume(0.1);
+    beesfx = loadSound("sfx/bees.wav"); beesfx.setVolume(0.04);
+	crow = loadSound("sfx/crow.wav"); crow.setVolume(0.04);
+	sloth = loadSound("sfx/sloth.wav"); sloth.setVolume(0.04);
+	wolf = loadSound("sfx/wolfhowl.wav"); wolf.setVolume(0.04);
+	weaselsfx = loadSound("sfx/weasel.wav"); weaselsfx.setVolume(0.04);
+	lionsfx = loadSound("sfx/lion.wav"); lionsfx.setVolume(0.1);
+	catsfx = loadSound("sfx/kitty.wav"); catsfx.setVolume(0.04);
+	bubblessfx = loadSound("sfx/bubbles.mp3"); bubblessfx.setVolume(0.04);
+	peacocksfx = loadSound("sfx/peacock.mp3"); peacocksfx.setVolume(0.1);
+	squeak1 = loadSound("sfx/squeak1.wav"); squeak1.setVolume(0.6); squeak2 = loadSound("sfx/squeak2.wav"); squeak2.setVolume(0.6); squeak3 = loadSound("sfx/squeak3.wav"); squeak3.setVolume(0.6); squeak4 = loadSound("sfx/squeak4.wav"); squeak4.setVolume(0.6);
+	/* step1 = loadSound("sfx/carpet1.ogg"); step1.setVolume(0.09); step2 = loadSound("sfx/carpet2.ogg"); step2.setVolume(0.09); step3 = loadSound("sfx/carpet3.ogg"); step3.setVolume(0.09); step4 = loadSound("sfx/carpet4.ogg"); step4.setVolume(0.09); step5 = loadSound("sfx/carpet5.ogg"); step5.setVolume(0.09); */
 
 	// lyft_animations preload [ 0-7 ]
 	lyft0 = new Sprite(0, 0, 523, 738 ); lyft0.spriteSheet = 'assets/sequences/lyft.png'; lyft0.anis.frameDelay = 10; 
@@ -172,31 +187,31 @@ new Canvas(windowWidth, windowHeight, 'fullscreen');
     // Clouds Generation
 	cloud1 = new Sprite(); cloud1.amount = 1; cloud1.scale = windowHeight/1800; cloud1.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud1.layer = 1;
 	cloud1.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud1.speed = random(0, 0.3) + 0.1; cloud1.collider = 'none';
-	cloud1.image = '../assets/cloud_1.png'; cloud1.width = windowWidth/8; cloud1.height = windowHeight/8; cloud1.opacity = 0.8;
+	cloud1.image = 'assets/cloud_1.png'; cloud1.width = windowWidth/8; cloud1.height = windowHeight/8; cloud1.opacity = 0.8;
 
 	cloud2 = new Sprite(); cloud2.amount = 1; cloud2.scale = windowHeight/1800; cloud2.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud2.layer = 1;
 	cloud2.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud2.speed = random(0, 0.3) + 0.1; cloud2.collider = 'none';
-	cloud2.image = '../assets/cloud_10.png'; cloud2.width = windowWidth/8; cloud2.height = windowHeight/8; cloud2.opacity = 0.8;
+	cloud2.image = 'assets/cloud_10.png'; cloud2.width = windowWidth/8; cloud2.height = windowHeight/8; cloud2.opacity = 0.8;
 
 	cloud3 = new Sprite(); cloud3.amount = 1; cloud3.scale = windowHeight/1800; cloud3.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud3.layer = 1;
 	cloud3.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud3.speed = random(0, 0.3) + 0.1; cloud3.collider = 'none';
-	cloud3.image = '../assets/cloud_11.png'; cloud3.width = windowWidth/8; cloud3.height = windowHeight/8; cloud3.opacity = 0.8;
+	cloud3.image = 'assets/cloud_11.png'; cloud3.width = windowWidth/8; cloud3.height = windowHeight/8; cloud3.opacity = 0.8;
 
 	cloud4 = new Sprite(); cloud4.amount = 1; cloud4.scale = windowHeight/1800; cloud4.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud4.layer = 1;
 	cloud4.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud4.speed = random(0, 0.3) + 0.1; cloud4.collider = 'none';
-	cloud4.image = '../assets/cloud_' + floor(random(2, 9))+ '.png'; cloud4.width = windowWidth/8; cloud4.height = windowHeight/8; cloud4.opacity = 0.8;
+	cloud4.image = 'assets/cloud_' + floor(random(2, 9))+ '.png'; cloud4.width = windowWidth/8; cloud4.height = windowHeight/8; cloud4.opacity = 0.8;
 
 	cloud5 = new Sprite(); cloud5.amount = 1; cloud5.scale = windowHeight/1800; cloud5.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud5.layer = 1;
 	cloud5.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud5.speed = random(0, 0.3) + 0.1; cloud5.collider = 'none';
-	cloud5.image = '../assets/cloud_' + floor(random(2, 9))+ '.png'; cloud5.width = windowWidth/8; cloud5.height = windowHeight/8; cloud5.opacity = 0.8;
+	cloud5.image = 'assets/cloud_' + floor(random(2, 9))+ '.png'; cloud5.width = windowWidth/8; cloud5.height = windowHeight/8; cloud5.opacity = 0.8;
 
 	cloud6 = new Sprite(); cloud6.amount = 1; cloud6.scale = windowHeight/1800; cloud6.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud6.layer = 1;
 	cloud6.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud6.speed = random(0, 0.3) + 0.1; cloud6.collider = 'none';
-	cloud6.image = '../assets/cloud_' + floor(random(2, 9))+ '.png'; cloud6.width = windowWidth/8; cloud6.height = windowHeight/8; cloud6.opacity = 0.8;
+	cloud6.image = 'assets/cloud_' + floor(random(2, 9))+ '.png'; cloud6.width = windowWidth/8; cloud6.height = windowHeight/8; cloud6.opacity = 0.8;
 
 	cloud7 = new Sprite(); cloud7.amount = 1; cloud7.scale = windowHeight/1800; cloud7.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud7.layer = 1;
 	cloud7.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud7.speed = random(0, 0.3) + 0.1; cloud7.collider = 'none';
-	cloud7.image = '../assets/cloud_' + floor(random(2, 9))+ '.png'; cloud7.width = windowWidth/8; cloud7.height = windowHeight/8; cloud7.opacity = 0.8;
+	cloud7.image = 'assets/cloud_' + floor(random(2, 9))+ '.png'; cloud7.width = windowWidth/8; cloud7.height = windowHeight/8; cloud7.opacity = 0.8;
 	
     // Building Generation
     bricks = new Group();
@@ -278,13 +293,13 @@ new Canvas(windowWidth, windowHeight, 'fullscreen');
 	tower1 = new Sprite(); 
 	tower1.y = tilesGroup[7].y - tilesGroup[7].y/4; tower1.x = windowWidth/18;
 	tower1.collider = 'none'; tower1.layer = 1;  
-	tower1.image = '../assets/building_' + floor(random(1, 6)) + '.png'; 
+	tower1.image = 'assets/building_' + floor(random(1, 6)) + '.png'; 
 
 	// Right-side Tower 2
 	tower2 = new Sprite(); 
 	tower2.y = tilesGroup[7].y - tilesGroup[7].y/4; tower2.x = windowWidth - windowWidth/18;
 	tower2.collider = 'none'; tower2.layer = 1;  
-	tower2.image = '../assets/building_' + floor(random(1, 6)) + '.png'; 
+	tower2.image = 'assets/building_' + floor(random(1, 6)) + '.png'; 
 
 	// Add more towers if longer width
 	if (windowWidth > 1300){
@@ -292,12 +307,12 @@ new Canvas(windowWidth, windowHeight, 'fullscreen');
 	tower3 = new Sprite(); 
 	tower3.y = tilesGroup[7].y - tilesGroup[7].y/4; tower3.x = windowWidth - windowWidth/5;
 	tower3.collider = 'none'; tower3.layer = 1;  
-	tower3.image = '../assets/building_' + floor(random(1, 6)) + '.png'; 
+	tower3.image = 'assets/building_' + floor(random(1, 6)) + '.png'; 
 
 	tower4 = new Sprite(); 
 	tower4.y = tilesGroup[7].y - tilesGroup[7].y/4; tower4.x = windowWidth/5;
 	tower4.collider = 'none'; tower4.layer = 1;  
-	tower4.image = '../assets/building_' + floor(random(1, 6)) + '.png'; 
+	tower4.image = 'assets/building_' + floor(random(1, 6)) + '.png'; 
 	} else if (windowWidth > 2000){
 
 	}
@@ -742,22 +757,22 @@ rat4.x = random((tilesGroup[7].x + tilesGroup[7].width/2), (tilesGroup[7].x - ti
 // Rat Smoke Trail
 trail1 = new Group();
 trail1.d = 10; trail1.collider = 'none'; trail1.direction = 'up'; trail1.speed = 0.05; trail1.life = 50; trail1.rotation = () => random(0, 360);
-trail1.amount = 1; trail1.x = rat1.x; trail1.y = rat1.y; trail1.image = '../assets/smoke_' + trailType+ '.png'; trail1.scale = 0.25; trail1.opacity = 0.5;
+trail1.amount = 1; trail1.x = rat1.x; trail1.y = rat1.y; trail1.image = 'assets/smoke_' + trailType+ '.png'; trail1.scale = 0.25; trail1.opacity = 0.5;
 trail2 = new Group();
 trail2.d = 10; trail2.collider = 'none'; trail2.direction = 'up'; trail2.speed = 0.05; trail2.life = 50; trail2.rotation = () => random(0, 360);
-trail2.amount = 1; trail2.x = rat2.x; trail2.y = rat2.y; trail2.image = '../assets/smoke_' + trailType+ '.png'; trail2.scale = 0.25; trail2.opacity = 0.5;
+trail2.amount = 1; trail2.x = rat2.x; trail2.y = rat2.y; trail2.image = 'assets/smoke_' + trailType+ '.png'; trail2.scale = 0.25; trail2.opacity = 0.5;
 trail3 = new Group();
 trail3.d = 10; trail3.collider = 'none'; trail3.direction = 'up'; trail3.speed = 0.05; trail3.life = 50; trail3.rotation = () => random(0, 360);
-trail3.amount = 1; trail3.x = rat3.x; trail3.y = rat3.y; trail3.image = '../assets/smoke_' + trailType+ '.png'; trail3.scale = 0.25; trail3.opacity = 0.5;
+trail3.amount = 1; trail3.x = rat3.x; trail3.y = rat3.y; trail3.image = 'assets/smoke_' + trailType+ '.png'; trail3.scale = 0.25; trail3.opacity = 0.5;
 trail4 = new Group();
 trail4.d = 10; trail4.collider = 'none'; trail4.direction = 'up'; trail4.speed = 0.05; trail4.life = 50; trail4.rotation = () => random(0, 360);
-trail4.amount = 1; trail4.x = rat4.x; trail4.y = rat4.y; trail4.image = '../assets/smoke_' + trailType+ '.png'; trail4.scale = 0.25; trail4.opacity = 0.5;
+trail4.amount = 1; trail4.x = rat4.x; trail4.y = rat4.y; trail4.image = 'assets/smoke_' + trailType+ '.png'; trail4.scale = 0.25; trail4.opacity = 0.5;
 
 // Sloth Rising Particles
 slothPart1 = new Group; slothPart2 = new Group; 
-slothPart1.d = floor(random(50, 5)); slothPart1.collider = 'none'; slothPart1.speed = (i) => random(0.06, 0.1); slothPart1.life = 600; slothPart1.rotation = () => random(45, -45); slothPart1.direction = "up"; slothPart1.layer = 3; slothPart1.image = "../assets/z_sprite.png"; slothPart1.scale = (i) => random(0.20,0.50);
+slothPart1.d = floor(random(50, 5)); slothPart1.collider = 'none'; slothPart1.speed = (i) => random(0.06, 0.1); slothPart1.life = 600; slothPart1.rotation = () => random(45, -45); slothPart1.direction = "up"; slothPart1.layer = 3; slothPart1.image = "assets/z_sprite.png"; slothPart1.scale = (i) => random(0.20,0.50);
 slothPart1.amount = (i) => floor(random(2,4)); slothPart1.x = (i) => sloth1L.x + random(10, -10) ; slothPart1.y = sloth1L.y + random(-100,100); slothPart1.scale = 0.25; slothPart1.opacity = (i) => random(0.2, 0.8); slothPart1.color = 'white'; slothPart1.strokeWeight = 0;
-slothPart2.d = floor(random(50, 5)); slothPart2.collider = 'none'; slothPart2.speed = (i) => random(0.06, 0.1); slothPart2.life = 600; slothPart2.rotation = () => random(45, -45); slothPart2.direction = "up"; slothPart2.layer = 3; slothPart2.image = "../assets/z_sprite.png"; slothPart2.scale = (i) => random(0.20,0.50);
+slothPart2.d = floor(random(50, 5)); slothPart2.collider = 'none'; slothPart2.speed = (i) => random(0.06, 0.1); slothPart2.life = 600; slothPart2.rotation = () => random(45, -45); slothPart2.direction = "up"; slothPart2.layer = 3; slothPart2.image = "assets/z_sprite.png"; slothPart2.scale = (i) => random(0.20,0.50);
 slothPart2.amount = (i) => floor(random(2,4)); slothPart2.x = (i) => sloth1R.x + random(10, -10) ; slothPart2.y = sloth1R.y + random(-100,100); slothPart2.scale = 0.25; slothPart2.opacity = (i) => random(0.2, 0.8); slothPart2.color = 'white'; slothPart2.strokeWeight = 0;
 
 // Bee Pollen Trail
@@ -771,9 +786,9 @@ pollen3.amount = (i) => floor(random(2,4)); pollen3.x = bee3.x; pollen3.y = bee3
 
 // Weasel Chat Bubbles Spawning
 babble1 = new Group; blah2 = new Group; yap3 = new Group;
-babble1.w = 199; babble1.h = 67; babble1.collider = 'dynamic'; babble1.life = 50; babble1.amount = (i) => floor(random(1,1)); babble1.scale = (i) => random(0.20,0.70); babble1.image = '../assets/blah_1.png'; babble1.mass = 15;
-blah2.w = 141; blah2.h = 67; blah2.collider = 'dynamic'; blah2.life = 50; blah2.amount = (i) => floor(random(1,1)); blah2.scale = (i) => random(0.20,0.70); blah2.image = '../assets/blah_2.png'; blah2.mass = 15;
-yap3.w = 110; yap3.h = 67; yap3.collider = 'dynamic'; yap3.life = 50; yap3.amount = (i) => floor(random(1,1)); yap3.scale = (i) => random(0.20,0.70); yap3.image = '../assets/blah_3.png'; yap3.mass = 15;
+babble1.w = 199; babble1.h = 67; babble1.collider = 'dynamic'; babble1.life = 50; babble1.amount = (i) => floor(random(1,1)); babble1.scale = (i) => random(0.20,0.70); babble1.image = 'assets/blah_1.png'; babble1.mass = 15;
+blah2.w = 141; blah2.h = 67; blah2.collider = 'dynamic'; blah2.life = 50; blah2.amount = (i) => floor(random(1,1)); blah2.scale = (i) => random(0.20,0.70); blah2.image = 'assets/blah_2.png'; blah2.mass = 15;
+yap3.w = 110; yap3.h = 67; yap3.collider = 'dynamic'; yap3.life = 50; yap3.amount = (i) => floor(random(1,1)); yap3.scale = (i) => random(0.20,0.70); yap3.image = 'assets/blah_3.png'; yap3.mass = 15;
 
 babble1.overlaps(lv4Plant); babble1.overlaps(lv4coffee); babble1.overlaps(lv4lamp);
 blah2.overlaps(lv4Plant); blah2.overlaps(lv4coffee); blah2.overlaps(lv4lamp);
@@ -781,8 +796,8 @@ yap3.overlaps(lv4Plant); yap3.overlaps(lv4coffee); yap3.overlaps(lv4lamp);
 
 //Peacock Props Spawning
 trophy1 = new Group; trophy2 = new Group;
-trophy1.w = 130; trophy1.h = 80; trophy1.collider = 'dynamic'; trophy1.life = 300; trophy1.amount = (i) => floor(random(1,1)); trophy1.scale = (i) => random(0.25,0.45); trophy1.image = '../assets/lv6_trophy1.png'; trophy1.mass = 15;
-trophy2.w = 87; trophy2.h = 99; trophy2.collider = 'dynamic'; trophy2.life = 300; trophy2.amount = (i) => floor(random(1,1)); trophy2.scale = (i) => random(0.25,0.45); trophy2.image = '../assets/lv6_trophy2.png'; trophy2.mass = 15;
+trophy1.w = 130; trophy1.h = 80; trophy1.collider = 'dynamic'; trophy1.life = 300; trophy1.amount = (i) => floor(random(1,1)); trophy1.scale = (i) => random(0.25,0.45); trophy1.image = 'assets/lv6_trophy1.png'; trophy1.mass = 15;
+trophy2.w = 87; trophy2.h = 99; trophy2.collider = 'dynamic'; trophy2.life = 300; trophy2.amount = (i) => floor(random(1,1)); trophy2.scale = (i) => random(0.25,0.45); trophy2.image = 'assets/lv6_trophy2.png'; trophy2.mass = 15;
 
 // NPCs Static Characteristics
 // Level 1, Cat  
