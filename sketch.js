@@ -921,8 +921,8 @@ function smallScreenSettings() {
 	MobileView = 1;
 	camera.zoom = 2;
 
-	bricks.w = 768;
-	playarea.w = 768-width/150;
+	bricks.w = 500;
+	playarea.w = 500-width/150;
 	MinScaleX = 1.4;
 
 	if (RatFocus==0) { RatFocus=1
