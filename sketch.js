@@ -934,18 +934,6 @@ case 7: SpawnLv7cheese(); break; case 8: SpawnLv8cheese(); break;
 background('#ede7fd');
 world.gravity.y = 11;
 
-if (debugMode) {
-    // Debug mode is ON
-    fill(0);
-    textSize(24);
-    text("Debug Mode: ON", 10, 30);
-  } else {
-    // Debug mode is OFF
-    fill(0);
-    textSize(24);
-    text("Debug Mode: OFF", 10, 30);
-  }
-
 
 if (initial == 0) {
 //Preloading, on active memory 
@@ -992,10 +980,10 @@ if(rat1.overlapping(tilesGroup[5])) { BeeCollide++ } if(rat2.overlapping(tilesGr
 if (BeeCollide >= 1000) { beesfx.play(); BeeCollide = 0;}
 
 // Rat Self-Straighten
-if (rat1.rotation >= 1) { rat1.rotateTo(0,0.5);} else if (rat1.rotation <= -1) {rat1.rotateTo(0,0.5); } else if (rat1.rotation == 0) {}
-if (rat2.rotation >= 1) { rat2.rotateTo(0,0.5);} else if (rat2.rotation <= -1) {rat2.rotateTo(0,0.5); } else if (rat2.rotation == 0) {}
-if (rat3.rotation >= 1) { rat3.rotateTo(0,0.5);} else if (rat3.rotation <= -1) {rat3.rotateTo(0,0.5); } else if (rat3.rotation == 0) {}
-if (rat4.rotation >= 1) { rat4.rotateTo(0,0.5);} else if (rat4.rotation <= -1) {rat4.rotateTo(0,0.5); } else if (rat4.rotation == 0) {}
+if (rat1.rotation >= 1) { rat1.rotateMinTo(0,0.5);} else if (rat1.rotation <= -1) {rat1.rotateMinTo(0,0.5); } else if (rat1.rotation == 0) {}
+if (rat2.rotation >= 1) { rat2.rotateMinTo(0,0.5);} else if (rat2.rotation <= -1) {rat2.rotateMinTo(0,0.5); } else if (rat2.rotation == 0) {}
+if (rat3.rotation >= 1) { rat3.rotateMinTo(0,0.5);} else if (rat3.rotation <= -1) {rat3.rotateMinTo(0,0.5); } else if (rat3.rotation == 0) {}
+if (rat4.rotation >= 1) { rat4.rotateMinTo(0,0.5);} else if (rat4.rotation <= -1) {rat4.rotateMinTo(0,0.5); } else if (rat4.rotation == 0) {}
 
 // Rat Cheese Pickup Function
 rat1.overlaps(cheese1, collectR1C1); rat1.overlaps(cheese2, collectR1C2); rat1.overlaps(cheese3, collectR1C3);
