@@ -6,7 +6,7 @@
 	"license": "CC0",
 	"dependencies": {
 		"p5": "^1.9.2",
-		"p5play": "^3.26.4",
+		"p5play": "^3.26.5",
 		"q5": "^2.14.4"
 	},
 	"devDependencies": {
