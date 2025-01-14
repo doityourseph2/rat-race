@@ -1,5 +1,7 @@
 # RAT RACE!
 
+![Rat Race title card](rat-race.png)
+
 Made with p5.js and [p5play](https://p5play.org).
 
 An interactive simulation representing our shared corporate struggles through animals to encourage discussion.
