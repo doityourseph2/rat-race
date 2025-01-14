@@ -7,7 +7,7 @@
 	"dependencies": {
 		"p5": "^1.9.2",
 		"p5play": "^3.21.4",
-		"q5": "^1.9.16"
+		"q5": "^1.9.70"
 	},
 	"devDependencies": {
 		"@types/p5": "^1.7.6"

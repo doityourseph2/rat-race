@@ -1,6 +1,6 @@
 # RAT RACE!
 
-made with p5js and p5.play
+Made with p5.js and [p5play](https://p5play.org).
 
 An interactive simulation representing our shared corporate struggles through animals to encourage discussion.
 Tapping into our shared obsession of the self-defeating pursuit of money, power, and status... our struggles are simulated within this artwork, with a light-hearted tone in mind.

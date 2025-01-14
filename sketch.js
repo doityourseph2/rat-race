@@ -5,7 +5,7 @@ let cheeseToggle = 1, cheese1, cheese2, cheese3;
 let BluecheeseToggle = 1, Bluecheese1, Bluecheese2, Bluecheese3;
 let BackgroundScaling = 'Min';
 let BackgroundWidth = (1281); let BackgroundHeight = (541);
-let MinScaleY = 0.9; let MinScaleX = 1.33;
+let MinScaleY = 0.9; let MinScaleX = 0.666;
 let BricksScaleY; let BricksScaleX;
 let clouds, cloud1, cloud2, cloud3, cloud4, cloud5, cloud6;
 let lift, lyft1, lyft2, lyft3, lyft4, lyft5, lyft6, lyft7, lyft0;
@@ -29,6 +29,7 @@ let Wolf1Event = 0;  Wolf1Timer = 0; Wolf2Event = 0; Wolf2Timer = 0;
 let Lion1Event = 0;  Lion1Timer = 0; Lion2Event = 0; Lion2Timer = 0;
 let KBinput = 0; let debugMode = false; 
 let BeeCollide = 0; 
+let adLibFont;
 //SFX Timing
 let bgmTimer = 0; let ambianceTimer = 0; let stepperTimer = 0;
 
@@ -41,11 +42,13 @@ function LiftRandomise() {
 	L6Split = [5, 7][floor(random() * 2)]; L5Split = [4, 6][floor(random() * 2)];
 	L4Split = [3, 5][floor(random() * 2)]; L3Split = [2, 4][floor(random() * 2)];
 	L2Split = [1, 3][floor(random() * 2)]; L1Split = [0, 2][floor(random() * 2)];
-	}
+}
 
-	
+
 function preload() {
-	font = loadFont('adlib.ttf');
+	// defaultImageScale(1);
+
+	adLibFont = loadFont('adlib.ttf');
 
 	// sound preload
 	bgm = loadSound("sfx/ChillMenu_Loopable.wav"); bgm.setVolume(0.1);
@@ -53,7 +56,7 @@ function preload() {
 	liftbell = loadSound("sfx/liftbell.wav"); liftbell.setVolume(0.05);
 	spawnCheesesfx = loadSound("sfx/spawnCheese.wav"); spawnCheesesfx.setVolume(0.05);
 	crunch = loadSound("sfx/crunch.wav"); crunch.setVolume(0.05);
-    beesfx = loadSound("sfx/bees.wav"); beesfx.setVolume(0.02);
+  beesfx = loadSound("sfx/bees.wav"); beesfx.setVolume(0.02);
 	crow = loadSound("sfx/crow.wav"); crow.setVolume(0.02);
 	sloth = loadSound("sfx/sloth.wav"); sloth.setVolume(0.02);
 	wolf = loadSound("sfx/wolfhowl.wav"); wolf.setVolume(0.02);
@@ -124,7 +127,7 @@ function preload() {
 	sloth1R = new Sprite(0, 0, 446, 446 ); sloth1R.spriteSheet = 'assets/sequences/sloth_2.png'; sloth1R.anis.frameDelay = 10; 
 	sloth1R.addAnis({ ClockW: { row: 0, frames: 10 }, ClockWfreeze: { row: 0, frames: 1 }, AntiClockW: { row: 1, frames: 10 }, AntiClockWfreeze: { row: 1, frames: 1 }}); sloth1R.changeAni('ClockWfreeze');
 	 
-    sloth1L = new Sprite(0, 0, 446, 446 ); sloth1L.spriteSheet = 'assets/sequences/sloth_2.png'; sloth1L.anis.frameDelay = 10; 
+  sloth1L = new Sprite(0, 0, 446, 446 ); sloth1L.spriteSheet = 'assets/sequences/sloth_2.png'; sloth1L.anis.frameDelay = 10; 
 	sloth1L.addAnis({ ClockW: { row: 0, frames: 10 }, ClockWfreeze: { row: 0, frames: 1 }, AntiClockW: { row: 1, frames: 10 }, AntiClockWfreeze: { row: 1, frames: 1 }}); sloth1R.changeAni('AntiClockWfreeze');
 
 	sloth2R = new Sprite(0, 0, 212, 190 ); sloth2R.spriteSheet = 'assets/sequences/sloth_1.png'; sloth2R.anis.frameDelay = 10; 
@@ -173,21 +176,19 @@ function keyPressed() {
 	  allSprites.debug = !allSprites.debug;  
 	  console.log("debugMode:", debugMode);
 	}
-  }
+}
 
 function setup() {
-new Canvas(windowWidth, windowHeight, 'fullscreen');
-/*displayMode('centered', 'pixelated', 8);
-/*new Canvas(1080, 1080, 'fullscreen');*/
 
-	frameRate(60); 
-	textFont(font);
-    textAlign(CENTER, TOP);
-	/* p5play.renderStats = true;
-    allSprites.pixelPerfect = true; */
+new Canvas(windowWidth, windowHeight);
+displayMode('maxed');
+frameRate(60);
 
+textFont(adLibFont);
+textAlign(CENTER, TOP);
 
-	// Camera Initialisation
+// p5play.renderStats = true;
+// allSprites.pixelPerfect = true;
 
 	// Gradient Background,
 	gradient = new Sprite();
@@ -199,193 +200,210 @@ new Canvas(windowWidth, windowHeight, 'fullscreen');
 	GradScaleX = (windowWidth/1811)*2; GradScaleY = (windowHeight/815)*1.5;
 	gradient.image.scale.x = GradScaleX; gradient.image.scale.y = GradScaleY;
 
-    // Clouds Generation
-	cloud1 = new Sprite(); cloud1.amount = 1; cloud1.scale = windowHeight/1800; cloud1.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud1.layer = 1;
-	cloud1.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud1.speed = random(0, 0.3) + 0.1; cloud1.collider = 'none';
-	cloud1.image = 'assets/cloud_1.png'; cloud1.width = windowWidth/8; cloud1.height = windowHeight/8; cloud1.opacity = 0.8;
+	// Clouds Generation
+cloud1 = new Sprite(); cloud1.amount = 1; cloud1.scale = windowHeight/1800; cloud1.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud1.layer = 1;
+cloud1.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud1.speed = random(0, 0.3) + 0.1; cloud1.collider = 'none';
+cloud1.image = 'assets/cloud_1.png'; cloud1.width = windowWidth/8; cloud1.height = windowHeight/8; cloud1.opacity = 0.8;
 
-	cloud2 = new Sprite(); cloud2.amount = 1; cloud2.scale = windowHeight/1800; cloud2.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud2.layer = 1;
-	cloud2.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud2.speed = random(0, 0.3) + 0.1; cloud2.collider = 'none';
-	cloud2.image = 'assets/cloud_10.png'; cloud2.width = windowWidth/8; cloud2.height = windowHeight/8; cloud2.opacity = 0.8;
+cloud2 = new Sprite(); cloud2.amount = 1; cloud2.scale = windowHeight/1800; cloud2.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud2.layer = 1;
+cloud2.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud2.speed = random(0, 0.3) + 0.1; cloud2.collider = 'none';
+cloud2.image = 'assets/cloud_10.png'; cloud2.width = windowWidth/8; cloud2.height = windowHeight/8; cloud2.opacity = 0.8;
 
-	cloud3 = new Sprite(); cloud3.amount = 1; cloud3.scale = windowHeight/1800; cloud3.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud3.layer = 1;
-	cloud3.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud3.speed = random(0, 0.3) + 0.1; cloud3.collider = 'none';
-	cloud3.image = 'assets/cloud_11.png'; cloud3.width = windowWidth/8; cloud3.height = windowHeight/8; cloud3.opacity = 0.8;
+cloud3 = new Sprite(); cloud3.amount = 1; cloud3.scale = windowHeight/1800; cloud3.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud3.layer = 1;
+cloud3.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud3.speed = random(0, 0.3) + 0.1; cloud3.collider = 'none';
+cloud3.image = 'assets/cloud_11.png'; cloud3.width = windowWidth/8; cloud3.height = windowHeight/8; cloud3.opacity = 0.8;
 
-	cloud4 = new Sprite(); cloud4.amount = 1; cloud4.scale = windowHeight/1800; cloud4.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud4.layer = 1;
-	cloud4.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud4.speed = random(0, 0.3) + 0.1; cloud4.collider = 'none';
-	cloud4.image = 'assets/cloud_' + floor(random(2, 9))+ '.png'; cloud4.width = windowWidth/8; cloud4.height = windowHeight/8; cloud4.opacity = 0.8;
+cloud4 = new Sprite(); cloud4.amount = 1; cloud4.scale = windowHeight/1800; cloud4.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud4.layer = 1;
+cloud4.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud4.speed = random(0, 0.3) + 0.1; cloud4.collider = 'none';
+cloud4.image = 'assets/cloud_' + floor(random(2, 9))+ '.png'; cloud4.width = windowWidth/8; cloud4.height = windowHeight/8; cloud4.opacity = 0.8;
 
-	cloud5 = new Sprite(); cloud5.amount = 1; cloud5.scale = windowHeight/1800; cloud5.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud5.layer = 1;
-	cloud5.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud5.speed = random(0, 0.3) + 0.1; cloud5.collider = 'none';
-	cloud5.image = 'assets/cloud_' + floor(random(2, 9))+ '.png'; cloud5.width = windowWidth/8; cloud5.height = windowHeight/8; cloud5.opacity = 0.8;
+cloud5 = new Sprite(); cloud5.amount = 1; cloud5.scale = windowHeight/1800; cloud5.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud5.layer = 1;
+cloud5.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud5.speed = random(0, 0.3) + 0.1; cloud5.collider = 'none';
+cloud5.image = 'assets/cloud_' + floor(random(2, 9))+ '.png'; cloud5.width = windowWidth/8; cloud5.height = windowHeight/8; cloud5.opacity = 0.8;
 
-	cloud6 = new Sprite(); cloud6.amount = 1; cloud6.scale = windowHeight/1800; cloud6.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud6.layer = 1;
-	cloud6.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud6.speed = random(0, 0.3) + 0.1; cloud6.collider = 'none';
-	cloud6.image = 'assets/cloud_' + floor(random(2, 9))+ '.png'; cloud6.width = windowWidth/8; cloud6.height = windowHeight/8; cloud6.opacity = 0.8;
+cloud6 = new Sprite(); cloud6.amount = 1; cloud6.scale = windowHeight/1800; cloud6.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud6.layer = 1;
+cloud6.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud6.speed = random(0, 0.3) + 0.1; cloud6.collider = 'none';
+cloud6.image = 'assets/cloud_' + floor(random(2, 9))+ '.png'; cloud6.width = windowWidth/8; cloud6.height = windowHeight/8; cloud6.opacity = 0.8;
 
-	cloud7 = new Sprite(); cloud7.amount = 1; cloud7.scale = windowHeight/1800; cloud7.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud7.layer = 1;
-	cloud7.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud7.speed = random(0, 0.3) + 0.1; cloud7.collider = 'none';
-	cloud7.image = 'assets/cloud_' + floor(random(2, 9))+ '.png'; cloud7.width = windowWidth/8; cloud7.height = windowHeight/8; cloud7.opacity = 0.8;
+cloud7 = new Sprite(); cloud7.amount = 1; cloud7.scale = windowHeight/1800; cloud7.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud7.layer = 1;
+cloud7.y = (random(windowHeight/8, windowHeight/2) + windowHeight/60); cloud7.speed = random(0, 0.3) + 0.1; cloud7.collider = 'none';
+cloud7.image = 'assets/cloud_' + floor(random(2, 9))+ '.png'; cloud7.width = windowWidth/8; cloud7.height = windowHeight/8; cloud7.opacity = 0.8;
 	
-    // Building Generation
-    bricks = new Group();
-	bricks.w = width/1.5;
-	bricks.h = height/9;
-	bricks.tile = '=';
-    
-    bricks.textColor = 'white';
-    bricks.textSize = height/10;
-    bricks.collider = 'static';
+// Building Generation
+bricks = new Group();
+bricks.w = width / 1.5;
+bricks.h = height/9;
+bricks.tile = '=';
+bricks.textColor = 'white';
+bricks.textSize = height/10;
+bricks.collider = 'static';
 
-    tilesGroup = new Tiles(
-		[
-			'=',
-			'=',
-			'=',
-			'=',
-			'=',
-			'=',
-			'=',
-			'='
-		],
-		width/2, height/9+(height/30)-(height/60), bricks.w + 4, bricks.h + 4, 20, 20
-	);  tilesGroup.shape = "chain";
-	   /* tilesGroup.text = (i) => i; */
-	   // ^--- Older Block Text Inserts,
+tilesGroup = new Tiles(
+	[
+		'=',
+		'=',
+		'=',
+		'=',
+		'=',
+		'=',
+		'=',
+		'='
+	],
+	width/2, height/9+(height/30)-(height/60), bricks.w + 4, bricks.h + 4, 20, 20
+); tilesGroup.shape = "chain";
 
-	   // New Tile Group Text Names
-	   tilesGroup.textSize = height/20;
-	   tilesGroup[0].text = "8"; tilesGroup[0].textColor = '#FFE6C1'; tilesGroup[1].text = "7"; tilesGroup[1].textColor = '#FCF3F6'; 
-	   tilesGroup[2].text = "6"; tilesGroup[2].textColor = '#f7d5ff'; tilesGroup[3].text = "5"; tilesGroup[3].textColor = '#e0f6fe';
-	   tilesGroup[4].text = "4"; tilesGroup[4].textColor = '#A8FFF1'; tilesGroup[5].text = "3"; tilesGroup[5].textColor = '#fff0d0';
-	   tilesGroup[6].text = "2"; tilesGroup[6].textColor = '#FBFAFF'; tilesGroup[7].text = "1"; tilesGroup[7].textColor = '#82C3BB';
-	   
+/* tilesGroup.text = (i) => i; */
+// ^--- Older Block Text Inserts,
 
-        // Building Outline Generation
-        outlineGroup = new Tiles(
-		[
-			'=',
-			'=',
-			'=',
-			'=',
-			'=',
-			'=',
-			'=',
-			'='
-		],
-		width/2, height/9+(height/30)-(height/60), bricks.w + 4, bricks.h + 4, 20, 20
-	);  outlineGroup.shape = "chain";
-	    outlineGroup.stroke = '#270f6b';
-		outlineGroup.strokeWeight = 5;
+// New Tile Group Text Names
+tilesGroup.textSize = height/20;
+tilesGroup[0].text = "8"; tilesGroup[0].textColor = '#FFE6C1'; tilesGroup[1].text = "7"; tilesGroup[1].textColor = '#FCF3F6'; 
+tilesGroup[2].text = "6"; tilesGroup[2].textColor = '#f7d5ff'; tilesGroup[3].text = "5"; tilesGroup[3].textColor = '#e0f6fe';
+tilesGroup[4].text = "4"; tilesGroup[4].textColor = '#A8FFF1'; tilesGroup[5].text = "3"; tilesGroup[5].textColor = '#fff0d0';
+tilesGroup[6].text = "2"; tilesGroup[6].textColor = '#FBFAFF'; tilesGroup[7].text = "1"; tilesGroup[7].textColor = '#82C3BB';
+	
 
-	    // Playarea Hitbox
-	    playarea = new Sprite(); playarea.x = tilesGroup[4].x; playarea.y = tilesGroup[4].y - tilesGroup[4].height/2;
-	    playarea.width = width/1.5-width/150; playarea.height = height/9*9;
-	    playarea.collider = 'static'; playarea.opacity = 0; playarea.shape = 'chain';
+// Building Outline Generation
+outlineGroup = new Tiles(
+	[
+		'=',
+		'=',
+		'=',
+		'=',
+		'=',
+		'=',
+		'=',
+		'='
+	],
+	width/2, height/9+(height/30)-(height/60), bricks.w + 4, bricks.h + 4, 20, 20
+); outlineGroup.shape = "chain";
 
-		//Ground Generation
-		ground = new Sprite();
-		ground.h = tilesGroup[7].height; ground.w = windowWidth*2; 
-		ground.x = width/2
-		ground.y = tilesGroup[7].y + tilesGroup[7].height;
-		ground.amount = 1; ground.collider = 'static';
-		ground.color = '#270f6b'; ground.strokeWeight = 0;
+outlineGroup.stroke = '#270f6b';
+outlineGroup.strokeWeight = 5;
+
+// Playarea Hitbox
+playarea = new Sprite(); playarea.x = tilesGroup[4].x; playarea.y = tilesGroup[4].y - tilesGroup[4].height/2;
+playarea.height = height/9*9;
+playarea.collider = 'static'; playarea.opacity = 0; playarea.shape = 'chain';
+
+// Camera Initialisation
+if (windowWidth <= 1100) {
+	smallScreenSettings();
+} else {
+	largeScreenSettings();
+	camera.y = height * 0.8;
+}
+
+//Ground Generation
+ground = new Sprite();
+ground.h = tilesGroup[7].height; ground.w = windowWidth*2; 
+ground.x = width/2
+ground.y = tilesGroup[7].y + tilesGroup[7].height;
+ground.amount = 1; ground.collider = 'static';
+ground.color = '#270f6b'; ground.strokeWeight = 0;
  
-				//Ground2 Generation
-				ground2 = new Sprite();
-				ground2.h = tilesGroup[7].height*2; ground2.w = windowWidth*2; 
-				ground2.x = width/2
-				ground2.y = tilesGroup[7].y + tilesGroup[7].height*2;
-				ground2.amount = 1; ground2.collider = 'static';
-				ground2.color = '#270f6b'; ground2.strokeWeight = 0;
+//Ground2 Generation
+ground2 = new Sprite();
+ground2.h = tilesGroup[7].height*2; ground2.w = windowWidth*2; 
+ground2.x = width/2
+ground2.y = tilesGroup[7].y + tilesGroup[7].height*2;
+ground2.amount = 1; ground2.collider = 'static';
+ground2.color = '#270f6b'; ground2.strokeWeight = 0;
 
-	// Lift Generation
-	lift = new Group();
-	lift.h = tilesGroup[1].height/2.5; lift.w = lift.h * 0.7; 
-    lift.x = (i) => i + width/2 + random(width/8, -(width/8));
-	lift.y = (i) => i * height/9 + height/5.2-(height/60);
-	lift.amount = 8; lift.opacity = 0.0; lift.scale = 1;
-    lift.mass = 10000; lift.rotationLock = true;
-	/*lift.text = (i) => i; lift.textSize = 100;*/
-	
+// Lift Generation
+lift = new Group();
+lift.h = tilesGroup[1].height/2.5; lift.w = lift.h * 0.7; 
+lift.x = (i) => i + width/2 + random(width/8, -(width/8));
+lift.y = (i) => i * height/9 + height/5.2-(height/60);
+lift.amount = 8; lift.opacity = 0.0; lift.scale = 1;
+lift.mass = 10000; lift.rotationLock = true;
+/*lift.text = (i) => i; lift.textSize = 100;*/
 
-	// Midground Buildings 
-	// Left-side Tower 1
-	tower1 = new Sprite(); 
-	tower1.y = tilesGroup[7].y - tilesGroup[7].y/4; tower1.x = windowWidth/18;
-	tower1.collider = 'none'; tower1.layer = 1;  
-	tower1.image = 'assets/building_' + floor(random(1, 6)) + '.png'; 
 
+// Midground Buildings 
+// Left-side Tower 1
+tower1 = new Sprite(); 
+tower1.y = tilesGroup[7].y - tilesGroup[7].y/4; tower1.x = windowWidth/18;
+tower1.collider = 'none'; tower1.layer = 1;  
+tower1.image = 'assets/building_' + floor(random(1, 6)) + '.png'; 
+
+// Right-side Tower 2
+tower2 = new Sprite(); 
+tower2.y = tilesGroup[7].y - tilesGroup[7].y/4; tower2.x = windowWidth - windowWidth/18;
+tower2.collider = 'none'; tower2.layer = 1;  
+tower2.image = 'assets/building_' + floor(random(1, 6)) + '.png'; 
+
+// Add more towers if longer width
+if (windowWidth > 1300){
 	// Right-side Tower 2
-	tower2 = new Sprite(); 
-	tower2.y = tilesGroup[7].y - tilesGroup[7].y/4; tower2.x = windowWidth - windowWidth/18;
-	tower2.collider = 'none'; tower2.layer = 1;  
-	tower2.image = 'assets/building_' + floor(random(1, 6)) + '.png'; 
-
-	// Add more towers if longer width
-	if (windowWidth > 1300){
-    // Right-side Tower 2
-	tower3 = new Sprite(); 
+	tower3 = new Sprite();
 	tower3.y = tilesGroup[7].y - tilesGroup[7].y/4; tower3.x = windowWidth - windowWidth/5;
-	tower3.collider = 'none'; tower3.layer = 1;  
-	tower3.image = 'assets/building_' + floor(random(1, 6)) + '.png'; 
+	tower3.collider = 'none'; tower3.layer = 1;
+	tower3.image = 'assets/building_' + floor(random(1, 6)) + '.png';
 
 	tower4 = new Sprite(); 
 	tower4.y = tilesGroup[7].y - tilesGroup[7].y/4; tower4.x = windowWidth/5;
-	tower4.collider = 'none'; tower4.layer = 1;  
-	tower4.image = 'assets/building_' + floor(random(1, 6)) + '.png'; 
-	} else if (windowWidth > 2000){
+	tower4.collider = 'none'; tower4.layer = 1;
+	tower4.image = 'assets/building_' + floor(random(1, 6)) + '.png';
+} else if (windowWidth > 2000){
 
-	}
+}
 
-	// Midground Background (2560 x 436)
-	midground = new Sprite();
-	midground.x = windowWidth/2; midground.y = tilesGroup[7].y+tilesGroup[7].y/22;
-	midground.width = windowWidth;
-	midground.collider = 'none'; midground.layer = 1;
-	midground.image = 'assets/bg_midground.png'; midground.sleeping = true;
-	midgroundScaling = (windowWidth/2560); midground.image.scale = midgroundScaling*1.3;
-    
-	// Checkered Background Light (2589 x 753)
-	bgChecker = new Sprite();
-	bgChecker.x = windowWidth/2; bgChecker.y = tilesGroup[6].y;
-	bgChecker.width = windowWidth;
-	bgChecker.collider = 'none'; bgChecker.layer = 0;
-	bgChecker.image = 'assets/bg_checkered.png'; bgChecker.sleeping = true;
-    bgChecker.image.scale = midgroundScaling*1.3; bgChecker.opacity = 0.2;
-
-	// Checkered Background Dark (2589 x 753)
-	bgCheckerDark = new Sprite();
-	bgCheckerDark.x = windowWidth/2; bgCheckerDark.y = tilesGroup[0].y - windowHeight/5;
-	bgCheckerDark.width = windowWidth;
-	bgCheckerDark.collider = 'none'; bgCheckerDark.layer = 0;
-	bgCheckerDark.image = 'assets/bg_checkered_dark.png'; bgCheckerDark.sleeping = true;
-    bgCheckerDark.image.scale = midgroundScaling*1.3; bgCheckerDark.opacity = 0.15;
-
-	// Background Background "Buildings" (2560 x 436)
-	bgBackground = new Sprite();
-	bgBackground.x = windowWidth/2; bgBackground.y = tilesGroup[7].y;
-	bgBackground.width = windowWidth;
-	bgBackground.collider = 'none'; bgBackground.layer = 0;
-	bgBackground.image = 'assets/bg_background.png'; bgBackground.sleeping = true;
-    bgBackground.image.scale = midgroundScaling*1.3;
+// Midground Background (2560 x 436)
+midground = new Sprite();
+midground.x = windowWidth/2; midground.y = tilesGroup[7].y+tilesGroup[7].y/22;
+midground.width = windowWidth;
+midground.collider = 'none'; midground.layer = 1;
+midground.image = 'assets/bg_midground.png'; midground.sleeping = true;
+midgroundScaling = (windowWidth/2560); midground.image.scale = midgroundScaling*1.3;
 	
-	
+// Checkered Background Light (2589 x 753)
+bgChecker = new Sprite();
+bgChecker.x = windowWidth/2; bgChecker.y = tilesGroup[6].y;
+bgChecker.width = windowWidth;
+bgChecker.collider = 'none'; bgChecker.layer = 0;
+bgChecker.image = 'assets/bg_checkered.png'; bgChecker.sleeping = true;
+bgChecker.image.scale = midgroundScaling*1.3; bgChecker.opacity = 0.2;
+
+// Checkered Background Dark (2589 x 753)
+bgCheckerDark = new Sprite();
+bgCheckerDark.x = windowWidth/2; bgCheckerDark.y = tilesGroup[0].y - windowHeight/5;
+bgCheckerDark.width = windowWidth;
+bgCheckerDark.collider = 'none'; bgCheckerDark.layer = 0;
+bgCheckerDark.image = 'assets/bg_checkered_dark.png'; bgCheckerDark.sleeping = true;
+bgCheckerDark.image.scale = midgroundScaling*1.3; bgCheckerDark.opacity = 0.15;
+
+// Background Background "Buildings" (2560 x 436)
+bgBackground = new Sprite();
+bgBackground.x = windowWidth/2; bgBackground.y = tilesGroup[7].y;
+bgBackground.width = windowWidth;
+bgBackground.collider = 'none'; bgBackground.layer = 0;
+bgBackground.image = 'assets/bg_background.png'; bgBackground.sleeping = true;
+bgBackground.image.scale = midgroundScaling*1.3;
+
+
 
 // Wallpaper Min Scaling
 // What is the dimensions of the background? Enter them here: ( 1101x303 )
 // Responsive Background Textures Gen.
-let BricksScaleY = (bricks[0].y/BackgroundHeight) * MinScaleY; let BricksScaleX = (bricks[0].x/BackgroundWidth) * MinScaleX;
+// Wallpaper Mid-Max Scaling
+// What is the dimensions of the background?
+// Min (1281x541), Mid (2561x541), Max(3841x541)
+if (tilesGroup[1].width >= 350 && tilesGroup[1].width <= 700 && BackgroundScaling == 'Min') {
+	BackgroundScaling = 'Mid';
+	BackgroundWidth = 2561;
+	BackgroundHeight = 541;
+} else if (tilesGroup[1].width >= 701 && BackgroundScaling == 'Min') {
+	BackgroundScaling = 'Max';
+	BackgroundWidth = 3841;
+	BackgroundHeight = 541;
+}
 
-tilesGroup[0].image = 'assets/L0_' + BackgroundScaling + '.png'; tilesGroup[0].image.scale.y = BricksScaleY; tilesGroup[0].image.scale.x = BricksScaleX;
-tilesGroup[1].image = 'assets/L1_' + BackgroundScaling + '.png'; tilesGroup[1].image.scale.y = BricksScaleY; tilesGroup[1].image.scale.x = BricksScaleX;
-tilesGroup[2].image = 'assets/L2_' + BackgroundScaling + '.png'; tilesGroup[2].image.scale.y = BricksScaleY; tilesGroup[2].image.scale.x = BricksScaleX;
-tilesGroup[3].image = 'assets/L3_' + BackgroundScaling + '.png'; tilesGroup[3].image.scale.y = BricksScaleY; tilesGroup[3].image.scale.x = BricksScaleX;
-tilesGroup[4].image = 'assets/L4_' + BackgroundScaling + '.png'; tilesGroup[4].image.scale.y = BricksScaleY; tilesGroup[4].image.scale.x = BricksScaleX;
-tilesGroup[5].image = 'assets/L5_' + BackgroundScaling + '.png'; tilesGroup[5].image.scale.y = BricksScaleY; tilesGroup[5].image.scale.x = BricksScaleX;
-tilesGroup[6].image = 'assets/L6_' + BackgroundScaling + '.png'; tilesGroup[6].image.scale.y = BricksScaleY; tilesGroup[6].image.scale.x = BricksScaleX;
-tilesGroup[7].image = 'assets/L7_' + BackgroundScaling + '.png'; tilesGroup[7].image.scale.y = BricksScaleY; tilesGroup[7].image.scale.x = BricksScaleX;
+BricksScaleY = (bricks[0].y/BackgroundHeight) * MinScaleY;
+for (let i = 0; i < 8; i++) {
+	tilesGroup[i].image = `assets/L${i}_${BackgroundScaling}.png`;
+	tilesGroup[i].image.scale.y = BricksScaleY;
+}
 
 tilesGroup[0].layer = 2; tilesGroup[1].layer = 2; tilesGroup[2].layer = 2; tilesGroup[3].layer = 2; tilesGroup[4].layer = 2; tilesGroup[5].layer = 2; tilesGroup[6].layer = 2; tilesGroup[7].layer = 2;
 
@@ -884,45 +902,68 @@ cheese1.overlaps(lion1); cheese1.overlaps(lion2); cheese2.overlaps(lion1); chees
 
 }
 
+function mouseWheel(e) {
+	camera.y += e.delta;
+}
+
+function largeScreenSettings() {
+
+	MobileView = 0;
+	RatFocus == 0
+	camera.x = windowWidth/2; camera.zoom = 2;
+
+	bricks.w = width/3;
+	playarea.w = width/3-width/150;
+	MinScaleX = 0.66666;	
+}
+
+function smallScreenSettings() {
+	MobileView = 1;
+	camera.zoom = 2;
+
+	bricks.w = width/1.5;
+	playarea.w = width/1.5-width/150;
+	MinScaleX = 1.333333;	
+
+	if (RatFocus==0) { RatFocus=1
+	} else if (RatFocus==1) { camera.x = rat1.x; camera.y = rat1.y;
+  } else if (RatFocus==2) { camera.x = rat2.x; camera.y = rat2.y;
+	} else if (RatFocus==3) { camera.x = rat3.x; camera.y = rat3.y;
+  } else if (RatFocus==4) { camera.x = rat4.x; camera.y = rat4.y;
+	}
+}
+
+// TODO: enable dynamic resizing
+// function windowResized() {
+// 	resizeCanvas(windowWidth, windowHeight);
+// }
+
 function draw() {
-	clear();
 
 // Camera Settings
-if (windowWidth <= 768) {
-	MobileView = 1;
-	camera.zoom = 2.1;
-	if (RatFocus==0) {RatFocus=1
-	} else if (RatFocus==1) { camera.x = rat1.x; camera.y = rat1.y; 
-    } else if (RatFocus==2) { camera.x = rat2.x; camera.y = rat2.y; 
-	} else if (RatFocus==3) { camera.x = rat3.x; camera.y = rat3.y; 
-    } else if (RatFocus==4) { camera.x = rat4.x; camera.y = rat4.y; 
-	}
+if (windowWidth <= 1100) {
+	smallScreenSettings();
 
 	if (mouse.presses() && RatFocus == 1){ RatFocus = 2; 
 	} else if (mouse.presses() && RatFocus == 2){ RatFocus = 3; 
 	} else if (mouse.presses() && RatFocus == 3){ RatFocus = 4; 
-    } else if (mouse.presses() && RatFocus == 4){ RatFocus = 1; 
+  } else if (mouse.presses() && RatFocus == 4){ RatFocus = 1; 
 	}
 
-	// Crow Functions
-if (CheeseEvent == 0) { CheeseTimer++ }
-if (CheeseTimer >= 250) { CheeseTimer = 0;
+		// Crow Functions
+	if (CheeseEvent == 0) { CheeseTimer++ }
+	if (CheeseTimer >= 250) { CheeseTimer = 0;
 	const randomDiceRoll4 = Math.floor(Math.random() * 8) + 1;
 	console.log("Cheese Spawn");
-// Activate the corresponding function based on the dice roll
-switch (randomDiceRoll4) {
-case 1: SpawnLv1cheese(); break; case 2: SpawnLv2cheese(); break;
-case 3: SpawnLv3cheese(); break; case 4: SpawnLv4cheese(); break;
-case 5: SpawnLv5cheese(); break; case 6: SpawnLv6cheese(); break;
-case 7: SpawnLv7cheese(); break; case 8: SpawnLv8cheese(); break;
-}}
-
-
-
+	// Activate the corresponding function based on the dice roll
+	switch (randomDiceRoll4) {
+	case 1: SpawnLv1cheese(); break; case 2: SpawnLv2cheese(); break;
+	case 3: SpawnLv3cheese(); break; case 4: SpawnLv4cheese(); break;
+	case 5: SpawnLv5cheese(); break; case 6: SpawnLv6cheese(); break;
+	case 7: SpawnLv7cheese(); break; case 8: SpawnLv8cheese(); break;
+	}}
 } else {
-	MobileView = 0;
-	RatFocus == 0
-	camera.x = windowWidth/2; camera.y = windowHeight/2; camera.zoom = 1;
+	largeScreenSettings();
 
 	if (mouse.presses() && cheeseToggle == 1){ cheeseToggle = 2; SpawnCheese1();
 	} else if (mouse.presses() && cheeseToggle == 2){ cheeseToggle = 3; SpawnCheese2();
@@ -934,6 +975,10 @@ case 7: SpawnLv7cheese(); break; case 8: SpawnLv8cheese(); break;
 background('#ede7fd');
 world.gravity.y = 11;
 
+let BricksScaleX = (bricks[0].x/BackgroundWidth) * MinScaleX;
+for (let i = 0; i < 8; i++) {
+	tilesGroup[i].image.scale.x = BricksScaleX;
+}
 
 if (initial == 0) {
 //Preloading, on active memory 
@@ -1088,37 +1133,6 @@ if (kb.presses('r')) lyft1.changeAni('opening');
 if (kb.presses('t')) lyft1.changeAni('closing');
 if (kb.presses('y')) lyft1.changeAni('opened');
 if (kb.presses('u')) lyft1.changeAni('closed'); */
-
-// Wallpaper Mid-Max Scaling
-// What is the dimensions of the background?
-// Min (1281x541), Mid (2561x541), Max(3841x541)
-if (tilesGroup[1].width >= 350 && tilesGroup[1].width <= 700 && BackgroundScaling == 'Min'){
-	BackgroundScaling = 'Mid';
-	BackgroundWidth = (2561); BackgroundHeight = (541);
-	/*MinScaleY = 1; MinScaleX = 1;*/
-	BricksScaleY = (bricks[0].y/BackgroundHeight) * MinScaleY; let BricksScaleX = (bricks[0].x/BackgroundWidth) * MinScaleX;
-	tilesGroup[0].image = 'assets/L0_' + BackgroundScaling + '.png'; tilesGroup[0].image.scale.y = BricksScaleY; tilesGroup[0].image.scale.x = BricksScaleX;
-	tilesGroup[1].image = 'assets/L1_' + BackgroundScaling + '.png'; tilesGroup[1].image.scale.y = BricksScaleY; tilesGroup[1].image.scale.x = BricksScaleX;
-	tilesGroup[2].image = 'assets/L2_' + BackgroundScaling + '.png'; tilesGroup[2].image.scale.y = BricksScaleY; tilesGroup[2].image.scale.x = BricksScaleX;
-	tilesGroup[3].image = 'assets/L3_' + BackgroundScaling + '.png'; tilesGroup[3].image.scale.y = BricksScaleY; tilesGroup[3].image.scale.x = BricksScaleX;
-	tilesGroup[4].image = 'assets/L4_' + BackgroundScaling + '.png'; tilesGroup[4].image.scale.y = BricksScaleY; tilesGroup[4].image.scale.x = BricksScaleX;
-	tilesGroup[5].image = 'assets/L5_' + BackgroundScaling + '.png'; tilesGroup[5].image.scale.y = BricksScaleY; tilesGroup[5].image.scale.x = BricksScaleX;
-	tilesGroup[6].image = 'assets/L6_' + BackgroundScaling + '.png'; tilesGroup[6].image.scale.y = BricksScaleY; tilesGroup[6].image.scale.x = BricksScaleX;
-	tilesGroup[7].image = 'assets/L7_' + BackgroundScaling + '.png'; tilesGroup[7].image.scale.y = BricksScaleY; tilesGroup[7].image.scale.x = BricksScaleX;
-} else if (tilesGroup[1].width >= 701 && BackgroundScaling == 'Min'){
-	BackgroundScaling = 'Max';
-	BackgroundWidth = (3841); BackgroundHeight = (541);
-	/*MinScaleY = 1; MinScaleX = 1;*/
-	BricksScaleY = (bricks[0].y/BackgroundHeight) * MinScaleY; let BricksScaleX = (bricks[0].x/BackgroundWidth) * MinScaleX;
-	tilesGroup[0].image = 'assets/L0_' + BackgroundScaling + '.png'; tilesGroup[0].image.scale.y = BricksScaleY; tilesGroup[0].image.scale.x = BricksScaleX;
-	tilesGroup[1].image = 'assets/L1_' + BackgroundScaling + '.png'; tilesGroup[1].image.scale.y = BricksScaleY; tilesGroup[1].image.scale.x = BricksScaleX;
-	tilesGroup[2].image = 'assets/L2_' + BackgroundScaling + '.png'; tilesGroup[2].image.scale.y = BricksScaleY; tilesGroup[2].image.scale.x = BricksScaleX;
-	tilesGroup[3].image = 'assets/L3_' + BackgroundScaling + '.png'; tilesGroup[3].image.scale.y = BricksScaleY; tilesGroup[3].image.scale.x = BricksScaleX;
-	tilesGroup[4].image = 'assets/L4_' + BackgroundScaling + '.png'; tilesGroup[4].image.scale.y = BricksScaleY; tilesGroup[4].image.scale.x = BricksScaleX;
-	tilesGroup[5].image = 'assets/L5_' + BackgroundScaling + '.png'; tilesGroup[5].image.scale.y = BricksScaleY; tilesGroup[5].image.scale.x = BricksScaleX;
-	tilesGroup[6].image = 'assets/L6_' + BackgroundScaling + '.png'; tilesGroup[6].image.scale.y = BricksScaleY; tilesGroup[6].image.scale.x = BricksScaleX;
-	tilesGroup[7].image = 'assets/L7_' + BackgroundScaling + '.png'; tilesGroup[7].image.scale.y = BricksScaleY; tilesGroup[7].image.scale.x = BricksScaleX;
-}
 
 //Clouds Spawn
 if (cloud1.x >= windowWidth + cloud1.width/2) { cloud1.x = -cloud1.width; }
@@ -1375,10 +1389,12 @@ if (rat4.overlaps(lift[7]) && millis() - lastMoveTime > cooldownTime) {
 
 // Rat Escape Contingency 
 // Check if Rat touches the edges of the window, if so, teleport back into building.
-if (rat1.x < 0 || rat1.x > windowWidth || rat1.y < 0 || rat1.y > windowHeight) { rat1.x = lift[7].x; rat1.y = lift[7].y; }
-if (rat2.x < 0 || rat2.x > windowWidth || rat2.y < 0 || rat2.y > windowHeight) { rat2.x = lift[7].x; rat2.y = lift[7].y; }
-if (rat3.x < 0 || rat3.x > windowWidth || rat3.y < 0 || rat3.y > windowHeight) { rat3.x = lift[7].x; rat3.y = lift[7].y; }
-if (rat4.x < 0 || rat4.x > windowWidth || rat4.y < 0 || rat4.y > windowHeight) { rat4.x = lift[7].x; rat4.y = lift[7].y; }
+let minPosX = -100; let maxPosX = windowWidth + 100;
+let minPosY = -100; let maxPosY = windowHeight + 100;
+if (rat1.x < minPosX || rat1.x > maxPosX || rat1.y < minPosY || rat1.y > maxPosY) { rat1.x = lift[7].x; rat1.y = lift[7].y; }
+if (rat2.x < minPosX || rat2.x > maxPosX || rat2.y < minPosY || rat2.y > maxPosY) { rat2.x = lift[7].x; rat2.y = lift[7].y; }
+if (rat3.x < minPosX || rat3.x > maxPosX || rat3.y < minPosY || rat3.y > maxPosY) { rat3.x = lift[7].x; rat3.y = lift[7].y; }
+if (rat4.x < minPosX || rat4.x > maxPosX || rat4.y < minPosY || rat4.y > maxPosY) { rat4.x = lift[7].x; rat4.y = lift[7].y; }
 
 // Random Event Dice Roll
 // Every X Seconds, four dice randomly count till another event activates
