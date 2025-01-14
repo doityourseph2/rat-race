@@ -6,8 +6,8 @@
 	"license": "CC0",
 	"dependencies": {
 		"p5": "^1.9.2",
-		"p5play": "^3.21.4",
-		"q5": "^1.9.70"
+		"p5play": "^3.26.4",
+		"q5": "^2.14.4"
 	},
 	"devDependencies": {
 		"@types/p5": "^1.7.6"
