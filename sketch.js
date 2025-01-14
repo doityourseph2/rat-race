@@ -5,7 +5,7 @@ let cheeseToggle = 1, cheese1, cheese2, cheese3;
 let BluecheeseToggle = 1, Bluecheese1, Bluecheese2, Bluecheese3;
 let BackgroundScaling = 'Min';
 let BackgroundWidth = (1281); let BackgroundHeight = (541);
-let MinScaleY = 0.9; let MinScaleX = 1;
+let MinScaleY = 0.9; let MinScaleX = 1.33;
 let BricksScaleY; let BricksScaleX;
 let clouds, cloud1, cloud2, cloud3, cloud4, cloud5, cloud6;
 let lift, lyft1, lyft2, lyft3, lyft4, lyft5, lyft6, lyft7, lyft0;
@@ -27,10 +27,12 @@ let PeacockEvent = 0; PeacockTimer = 0;
 let Crow1Event = 0; Crow1Timer = 0; let Crow2Event = 0; Crow2Timer = 0;
 let Wolf1Event = 0;  Wolf1Timer = 0; Wolf2Event = 0; Wolf2Timer = 0;
 let Lion1Event = 0;  Lion1Timer = 0; Lion2Event = 0; Lion2Timer = 0;
-let KBinput = 0; 
+let KBinput = 0; let debugMode = false; 
 let BeeCollide = 0; 
 //SFX Timing
 let bgmTimer = 0; let ambianceTimer = 0; let stepperTimer = 0;
+
+
 
 // Lift Option Split Randomiser
 function LiftRandomise() {
@@ -163,6 +165,14 @@ function preload() {
 	lion2.addAnis({ idle: { row: 0, frames: 10 }, active: { row: 1, frames: 10 }}); lion2.changeAni('idle'); 
 }
 
+function keyPressed() {
+	if (key === 'd') {
+	  debugMode = !debugMode;
+	  allSprites.debug = !allSprites.debug;  
+	  console.log("debugMode:", debugMode);
+	}
+  }
+
 function setup() {
 new Canvas(windowWidth, windowHeight, 'fullscreen');
 /*displayMode('centered', 'pixelated', 8);
@@ -215,7 +225,7 @@ new Canvas(windowWidth, windowHeight, 'fullscreen');
 	
     // Building Generation
     bricks = new Group();
-	bricks.w = width/2;
+	bricks.w = width/1.5;
 	bricks.h = height/9;
 	bricks.tile = '=';
     
@@ -865,10 +875,22 @@ cheese1.overlaps(lion1); cheese1.overlaps(lion2); cheese2.overlaps(lion1); chees
 function draw() {
 	clear();
 
+	
 // Initialise World Variables
 background('#ede7fd');
 world.gravity.y = 11;
 
+if (debugMode) {
+    // Debug mode is ON
+    fill(0);
+    textSize(24);
+    text("Debug Mode: ON", 10, 30);
+  } else {
+    // Debug mode is OFF
+    fill(0);
+    textSize(24);
+    text("Debug Mode: OFF", 10, 30);
+  }
 
 
 if (initial == 0) {
@@ -881,7 +903,7 @@ sloth2L.x = random(tilesGroup[6].x - tilesGroup[6].width/5, tilesGroup[6].x - ti
 sloth1R.x = random(tilesGroup[6].x + tilesGroup[6].width/10, tilesGroup[6].x + tilesGroup[6].width/2.7); sloth1R.y = tilesGroup[6].y - tilesGroup[6].height/2.2;
 sloth1L.x = random(tilesGroup[6].x - tilesGroup[6].width/10, tilesGroup[6].x - tilesGroup[6].width/2.7); sloth1L.y = tilesGroup[6].y - tilesGroup[6].height/2.2;
 vineHB_R.x = sloth1R.x; vineHB_R.y = sloth1R.y; vineHB_R.rotation = -180;
-vineHB_L.x = sloth1L.x; vineHB_R.y = sloth1L.y; vineHB_L.rotation = -180; vineHB_L.mirror = true;
+vineHB_L.x = sloth1L.x; vineHB_R.y = sloth1L.y; vineHB_L.rotation = -180; 
 bee1.x = random(tilesGroup[5].x - tilesGroup[5].width/10, tilesGroup[5].x - tilesGroup[5].width/2.7); bee1.y = tilesGroup[5].y;
 bee2.x = random(tilesGroup[5].x - tilesGroup[5].width/10, tilesGroup[5].x - tilesGroup[5].width/2.7); bee2.y = tilesGroup[5].y;
 bee3.x = random(tilesGroup[5].x - tilesGroup[5].width/10, tilesGroup[5].x - tilesGroup[5].width/2.7); bee3.y = tilesGroup[5].y;
@@ -901,7 +923,7 @@ initial = 1; /* SNAP BACK TO REALITY, OOP THERE GOES GRAVITY*/
 }
 
 // BGM Loop
-bgmTimer++; if (bgmTimer >= 3830) { bgmStart(); bgmTimer = 0}
+bgmTimer++; if (bgmTimer >= 4030) { bgmStart(); bgmTimer = 0}
 ambianceTimer++; if (ambianceTimer >= 4010) { ambianceStart(); ambianceTimer = 0}
 /*stepperTimer++; if (stepperTimer >= 50) { Stepper(); stepperTimer = 0;}*/
 
@@ -961,27 +983,6 @@ if (rat3.overlaps(tilesGroup[6])) { rat3.collides(vineHB_L); } else if (rat3.ove
 if (rat4.overlaps(tilesGroup[6])) { rat4.collides(vineHB_L); } else if (rat4.overlaps(tilesGroup[5])) { rat4.overlaps(vineHB_L); } 
 
 vineHB_R.x = sloth1R.x; vineHB_R.y = sloth1R.y; vineHB_L.x = sloth1L.x; vineHB_L.y = sloth1L.y // Lock Vine Slider in place
-
-// Sloth R Rotation Mechanism ( DEPRECIATED, CONVERTED TO FUNCTION IN RANDOMISER )
-if (kb.presses('t') && isRotatingR == 'false') {
-	ClockWstart(); vineHB_R.rotation = -180;
-	vineHB_R.rotateTo(180, 3); isRotatingR = 'true'; // Start rotation
- } if (isRotatingR == 'true') {
-    if (vineHB_R.rotation == -180 ) {
-		vineHB_R.rotateTo(179, 3); isRotatingR = 'false'; vineHB_R.speed = 0; 
-	} else if (vineHB_R.rotation == -179){
-			vineHB_R.rotation = -180; isRotatingR = 'false'; // Stop the rotation
-		}}
-
-// Sloth L Rotation Mechanism
-if (kb.presses('y') && isRotatingL == 'false') {
-	AntiClockWstart();
-	vineHB_L.rotation = -180;
-	vineHB_L.rotateMinTo(90, 3); isRotatingL = 'true';}
-	if (isRotatingL == 'true') {
-		if (vineHB_L.rotation == -177 ) {
-			vineHB_L.rotateMinTo(180, 3); isRotatingL = 'false'; vineHB_L.speed = 0; 
-		}} 
 
 
 
@@ -1333,8 +1334,6 @@ if (rat4.overlaps(lift[7]) && millis() - lastMoveTime > cooldownTime) {
 	rat4.y = lift[L0Split].y; rat4.x = lift[L0Split].x; LiftOpen_0(); LiftRandomise(); Rat4Reset(); rat4state = 0; liftbell.play();
 	lastMoveTime = millis(); cooldownTime = random(minCooldown, maxCooldown); }}
 
-
-
 // Rat Escape Contingency 
 // Check if Rat touches the edges of the window, if so, teleport back into building.
 if (rat1.x < 0 || rat1.x > windowWidth || rat1.y < 0 || rat1.y > windowHeight) { rat1.x = lift[7].x; rat1.y = lift[7].y; }
@@ -1400,11 +1399,6 @@ if (kb.presses('6')) { if ( KBinput !== 6 ) {SpawnLv6cheese(); KBinput=6; spawnC
 if (kb.presses('7')) { if ( KBinput !== 7 ) {SpawnLv7cheese(); KBinput=7; spawnCheesesfx.play() } else {} }
 if (kb.presses('8')) { if ( KBinput !== 8 ) {SpawnLv8cheese(); KBinput=8; spawnCheesesfx.play() } else {} }
 
-// Debug Toggle Function
-function keyPressed() {
-	allSprites.debug = !allSprites.debug;  
-  }
-
 // Async Lift Open and Close Functions
 async function LiftOpen_7() { lyft7.changeAni('opening'); 
 	if (L7Split == 6) {
@@ -1465,13 +1459,13 @@ async function ambianceStart() {await ambiance.play()}
 
 // Wolf Transformations & Lion Roars 
 async function Squeaker()
- {	const squeakDice = Math.floor(Math.random() * 5) + 1;
+ {	const squeakDice = Math.floor(Math.random() * 4) + 1;
 
 	// Activate the corresponding function based on the dice roll
 	switch (squeakDice) {
 		case 1: squeak1.play(); break; case 2: squeak2.play(); break;
 		case 3: squeak3.play(); break; case 4: squeak4.play(); break;
-		case 5: squeak5.play(); break; }}
+}}
 
 /*async function Stepper()
  {	const stepDice = Math.floor(Math.random() * 4) + 1;
@@ -1497,14 +1491,17 @@ async function SlothRSwing() {
 }}}
 
 async function SlothLSwing() {
-if (isRotatingL == 'false') { sloth.play();
-	AntiClockWstart();
-	vineHB_L.rotation = -180;
-	vineHB_L.rotateMinTo(91, 3); isRotatingL = 'true';}
-	if (isRotatingL == 'true') {
-		if (vineHB_L.rotation == -177 ) {
-			vineHB_L.rotateMinTo(180, 3); isRotatingL = 'false'; vineHB_L.speed = 0; 
-		}}}
+	if (isRotatingL == 'false') { sloth.play();
+	AntiClockWstart(); vineHB_L.rotation = -180;
+	vineHB_L.rotateTo(180, 3); isRotatingL = 'true'; // Start rotation
+ } if (isRotatingL == 'true') {
+    if (vineHB_L.rotation == -180 ) {
+		vineHB_L.rotateTo(179, 3); isRotatingL = 'false'; vineHB_L.speed = 0; 
+	} else if (vineHB_L.rotation == -179){
+			vineHB_L.rotation = -180; isRotatingL = 'false'; // Stop the rotation
+}}}
+
+
 }
 
 // Weasel Anim. Functions
@@ -1561,5 +1558,5 @@ async function BLUEcollectR4C1(rat4, Bluecheese1) { Bluecheese1.remove(); rat4.c
 async function Rat1Reset() { rat1.changeAni('walk');}
 async function Rat2Reset() { rat2.changeAni('walk');}
 async function Rat3Reset() { rat3.changeAni('walk');}
-async function Rat4Reset() { rat4.changeAni('walk');
-}
+async function Rat4Reset() { rat4.changeAni('walk');}
+
