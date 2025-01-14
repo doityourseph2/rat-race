@@ -921,9 +921,9 @@ function smallScreenSettings() {
 	MobileView = 1;
 	camera.zoom = 2;
 
-	bricks.w = width/1.5;
-	playarea.w = width/1.5-width/150;
-	MinScaleX = 1.333333;	
+	bricks.w = 768;
+	playarea.w = 768-width/150;
+	MinScaleX = 1.4;
 
 	if (RatFocus==0) { RatFocus=1
 	} else if (RatFocus==1) { camera.x = rat1.x; camera.y = rat1.y;
@@ -975,7 +975,7 @@ if (windowWidth <= 1100) {
 background('#ede7fd');
 world.gravity.y = 11;
 
-let BricksScaleX = (bricks[0].x/BackgroundWidth) * MinScaleX;
+let BricksScaleX = bricks.w / tilesGroup[0].image.w ;
 for (let i = 0; i < 8; i++) {
 	tilesGroup[i].image.scale.x = BricksScaleX;
 }
