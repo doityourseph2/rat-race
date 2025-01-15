@@ -34,8 +34,7 @@ let adLibFont;
 let bgmTimer = 0; let ambianceTimer = 0; let stepperTimer = 0;
 
 //Mobile Camera System
-let MobileView = 0; let RatFocus = 0; let CheeseEvent = 0; let CheeseTimer = 0; 
-
+let MobileView = 0; let RatFocus = 0; let CheeseEvent = 0; let CheeseTimer = 0; let TileWidth = 0; let SpawnMulti = 0;
 
 // Lift Option Split Randomiser
 function LiftRandomise() {
@@ -56,7 +55,7 @@ function preload() {
 	liftbell = loadSound("sfx/liftbell.wav"); liftbell.setVolume(0.05);
 	spawnCheesesfx = loadSound("sfx/spawnCheese.wav"); spawnCheesesfx.setVolume(0.05);
 	crunch = loadSound("sfx/crunch.wav"); crunch.setVolume(0.05);
-  beesfx = loadSound("sfx/bees.wav"); beesfx.setVolume(0.02);
+    beesfx = loadSound("sfx/bees.wav"); beesfx.setVolume(0.02);
 	crow = loadSound("sfx/crow.wav"); crow.setVolume(0.02);
 	sloth = loadSound("sfx/sloth.wav"); sloth.setVolume(0.02);
 	wolf = loadSound("sfx/wolfhowl.wav"); wolf.setVolume(0.02);
@@ -187,6 +186,26 @@ frameRate(60);
 textFont(adLibFont);
 textAlign(CENTER, TOP);
 
+// Initialise TileWidth -> Spawning Bounding Boxes based on window size
+if (windowWidth <= 600){
+	console.log("XS Size detected"); 
+	TileWidth = 240;
+	camera.y = 452;
+	SpawnMulti = 1;
+
+} else if (windowWidth >= 600 && windowWidth <= 1100) {
+	console.log("Small Size detected"); 
+	TileWidth = 480;
+	camera.y = 545;
+	SpawnMulti = 2.5;
+
+} else {
+	console.log("Large Size detected");
+	TileWidth = (width / 1.5)- 10;
+	camera.y = 255;
+	SpawnMulti = 4;
+}
+
 // p5play.renderStats = true;
 // allSprites.pixelPerfect = true;
 
@@ -286,13 +305,6 @@ playarea = new Sprite(); playarea.x = tilesGroup[4].x; playarea.y = tilesGroup[4
 playarea.height = height/9*9;
 playarea.collider = 'static'; playarea.opacity = 0; playarea.shape = 'chain';
 
-// Camera Initialisation
-if (windowWidth <= 1100) {
-	smallScreenSettings();
-} else {
-	largeScreenSettings();
-	camera.y = height * 0.8;
-}
 
 //Ground Generation
 ground = new Sprite();
@@ -426,79 +438,79 @@ propsXScaling = (windowWidth/1000); propsYScaling = (windowHeight/1000);
 // Potted Plant x1-3 ( lv1Plant )
 lv1Plant = new props.Group(); lv1Plant.image = 'assets/lv1_props_3.png';
 lv1Plant.scale = 0.3; lv1Plant.image.scale = windowHeight/1000;
-lv1Plant.width = (propsYScaling)*69; lv1Plant.height = (propsYScaling)*129; lv1Plant.amount = floor(random(3, 4)); lv1Plant.rotationLock = true;
-lv1Plant.x = (i) => random((tilesGroup[7].x + tilesGroup[7].width/2), (tilesGroup[7].x - tilesGroup[7].width/2));
+lv1Plant.width = (propsYScaling)*69; lv1Plant.height = (propsYScaling)*129; lv1Plant.amount = floor(random(2, 3)*SpawnMulti); lv1Plant.rotationLock = true;
+lv1Plant.x = (i) => random((tilesGroup[7].x + TileWidth/2), (tilesGroup[7].x - TileWidth/2));
 lv1Plant.y = (i) => random((tilesGroup[7].y + tilesGroup[7].height/4), (tilesGroup[7].y));
 
 // Hairball x1-2 ( lv1Ball )
 lv1Ball = new props.Group(); lv1Ball.image = 'assets/lv1_props_1.png'; 
 lv1Ball.scale = 0.3; lv1Ball.image.scale = windowHeight/1000; lv1Ball.mass = 0; lv1Ball.bounciness = 0.8; lv1Ball.friction = 0.15; lv1Ball.rotationLock = false;
-/*lv1Ball.width = (propsYScaling)*62; lv1Ball.height = (propsYScaling)*62;*/ lv1Ball.diameter = (propsYScaling)*62; lv1Ball.amount = floor(random(3, 4)); 
-lv1Ball.x = (i) => random((tilesGroup[7].x + tilesGroup[7].width/2.2), (tilesGroup[7].x - tilesGroup[7].width/2.2));
+/*lv1Ball.width = (propsYScaling)*62; lv1Ball.height = (propsYScaling)*62;*/ lv1Ball.diameter = (propsYScaling)*62; lv1Ball.amount = floor(random(1, 3)*SpawnMulti); 
+lv1Ball.x = (i) => random((tilesGroup[7].x + TileWidth/2.2), (tilesGroup[7].x - TileWidth/2.2));
 lv1Ball.y = (i) => random((tilesGroup[7].y + tilesGroup[7].height/2), (tilesGroup[7].y));
 
 // Water Cooler x1-2 ( lv1Cool )
 lv1Cool = new props.Group(); lv1Cool.image = 'assets/lv1_props_2.png'; 
 lv1Cool.scale = 0.3; lv1Cool.image.scale = windowHeight/1000; 
-lv1Cool.width = (propsYScaling)*69; lv1Cool.height = (propsYScaling)*129; lv1Cool.amount = floor(random(2, 3)); 
-lv1Cool.x = (i) => random((tilesGroup[7].x + tilesGroup[7].width/2), (tilesGroup[7].x - tilesGroup[7].width/2));
+lv1Cool.width = (propsYScaling)*69; lv1Cool.height = (propsYScaling)*129; lv1Cool.amount = floor(random(1, 2)*SpawnMulti); 
+lv1Cool.x = (i) => random((tilesGroup[7].x + TileWidth/2), (tilesGroup[7].x - TileWidth/2));
 lv1Cool.y = (i) => random((tilesGroup[7].y + tilesGroup[7].height/4), (tilesGroup[7].y));
 
 // Sofa x1 ( lv1Sofa ), Random
 lv1Sofa = new props.Group(); lv1Sofa.image = 'assets/lv1_props_4.png'; 
 lv1Sofa.scale = 0.3; lv1Sofa.image.scale = windowHeight/1000; 
-lv1Sofa.width = (propsYScaling)*140; lv1Sofa.height = (propsYScaling)*71; lv1Sofa.amount = floor(random(1, 2)); 
-lv1Sofa.x = (i) => random((tilesGroup[7].x + tilesGroup[7].width/2), (tilesGroup[7].x - tilesGroup[7].width/2));
+lv1Sofa.width = (propsYScaling)*140; lv1Sofa.height = (propsYScaling)*71; lv1Sofa.amount = floor(random(1, 2)*SpawnMulti); 
+lv1Sofa.x = (i) => random((tilesGroup[7].x + TileWidth/2), (tilesGroup[7].x - TileWidth/2));
 lv1Sofa.y = (i) => random((tilesGroup[7].y + tilesGroup[7].height/2), (tilesGroup[7].y));
 
 // Web x1 ( lv1web ), Right Corner Mounted
 lv1Web = new props.Group(); lv1Web.image = 'assets/right_web.png'; 
 lv1Web.scale = 0.3; lv1Web.image.scale = windowHeight/1000; 
 lv1Web.width = (propsYScaling)*140; lv1Web.height = (propsYScaling)*71; lv1Web.amount = floor(random(1, 1)); 
-lv1Web.x = (tilesGroup[7].x + tilesGroup[7].width/2 - lv1Web.width/8); lv1Web.collider = "none";
+lv1Web.x = (tilesGroup[7].x + TileWidth/2 - lv1Web.width/8); lv1Web.collider = "none";
 lv1Web.y = tilesGroup[7].y - tilesGroup[7].height/2.5;
 
 // Spider x2 ( lv1spider ), Random Top Mounted
 lv1Spider = new props.Group(); lv1Spider.image = 'assets/spider.png'; 
 lv1Spider.scale = 0.3; lv1Spider.image.scale = windowHeight/1000; 
-lv1Spider.width = (propsYScaling)*140; lv1Spider.height = (propsYScaling)*71; lv1Spider.amount = floor(random(2, 3)); 
-lv1Spider.x = (i) =>  random(tilesGroup[7].x + tilesGroup[7].width/2.15, tilesGroup[7].x - tilesGroup[7].width/2.1); lv1Spider.collider = "none";
+lv1Spider.width = (propsYScaling)*140; lv1Spider.height = (propsYScaling)*71; lv1Spider.amount = floor(random(1, 2)*SpawnMulti); 
+lv1Spider.x = (i) =>  random(tilesGroup[7].x + TileWidth/2.15, tilesGroup[7].x - TileWidth/2.1); lv1Spider.collider = "none";
 lv1Spider.y = (i) =>  tilesGroup[7].y - tilesGroup[7].height/2.5; 
 
 // Poster 1 ( STAY CALM ) x1 ( lv1Post ), Random Middle Mounted
 lv1Post = new props.Group(); lv1Post.image = 'assets/poster_1.png'; 
 lv1Post.scale = 0.3; lv1Post.image.scale = windowHeight/1000; 
-lv1Post.width = (propsYScaling)*140; lv1Post.height = (propsYScaling)*71; lv1Post.amount = floor(random(3, 4)); 
-lv1Post.x = (i) => random(tilesGroup[7].x + tilesGroup[7].width/2.1, tilesGroup[7].x - tilesGroup[7].width/2.1); lv1Post.collider = "none";
+lv1Post.width = (propsYScaling)*140; lv1Post.height = (propsYScaling)*71; lv1Post.amount = floor(random(2, 3)*SpawnMulti); 
+lv1Post.x = (i) => random(tilesGroup[7].x + TileWidth/2.1, tilesGroup[7].x - TileWidth/2.1); lv1Post.collider = "none";
 lv1Post.y = (i) => random(tilesGroup[7].y, tilesGroup[7].y + tilesGroup[7].height/4); lv1Post.layer = 4;
 
 // Poster 2 ( LIVE LAUGH WORK ) x1 ( lv1Post2 ), Random Middle Mounted
 lv1Post = new props.Group(); lv1Post.image = 'assets/poster_2.png'; 
 lv1Post.scale = 0.3; lv1Post.image.scale = windowHeight/1000; 
-lv1Post.width = (propsYScaling)*140; lv1Post.height = (propsYScaling)*71; lv1Post.amount = floor(random(3, 4)); 
-lv1Post.x = (i) => random(tilesGroup[7].x + tilesGroup[7].width/2.1, tilesGroup[7].x - tilesGroup[7].width/2.1); lv1Post.collider = "none";
+lv1Post.width = (propsYScaling)*140; lv1Post.height = (propsYScaling)*71; lv1Post.amount = floor(random(2, 3)*SpawnMulti); 
+lv1Post.x = (i) => random(tilesGroup[7].x + TileWidth/2.1, tilesGroup[7].x - TileWidth/2.1); lv1Post.collider = "none";
 lv1Post.y = (i) => random(tilesGroup[7].y, tilesGroup[7].y + tilesGroup[7].height/4); lv1Post.layer = 4;
 
 // Vent ( lv1Vent ), Random Middle Mounted
 lv1Vent = new props.Group(); lv1Vent.image = 'assets/vent.png'; 
 lv1Vent.scale = 0.2; lv1Vent.image.scale = windowHeight/1000; 
-lv1Vent.width = (propsYScaling)*74; lv1Vent.height = (propsYScaling)*59; lv1Vent.amount = floor(random(2, 3)); 
-lv1Vent.x = (i) => random(tilesGroup[7].x + tilesGroup[7].width/2.1, tilesGroup[7].x - tilesGroup[7].width/2.1); lv1Vent.collider = "none";
+lv1Vent.width = (propsYScaling)*74; lv1Vent.height = (propsYScaling)*59; lv1Vent.amount = floor(random(1, 2)*SpawnMulti); 
+lv1Vent.x = (i) => random(tilesGroup[7].x + TileWidth/2.1, tilesGroup[7].x - TileWidth/2.1); lv1Vent.collider = "none";
 lv1Vent.y = (i) => random(tilesGroup[7].y - tilesGroup[7].height/2.5, tilesGroup[7].y - tilesGroup[7].height/3); lv1Vent.layer = 4;
 
 // LEVEL 6
 // Potted Bamboo x3-4 ( lv2Plant )
 lv2Plant = new props.Group(); lv2Plant.image = 'assets/lv2_props_1.png';
 lv2Plant.scale = 0.3; lv2Plant.image.scale = windowHeight/1000;
-lv2Plant.width = (propsYScaling)*80; lv2Plant.height = (propsYScaling)*163; lv2Plant.amount = floor(random(5, 6)); lv2Plant.rotationLock = true;
-lv2Plant.x = (i) => random((tilesGroup[6].x + tilesGroup[6].width/2), (tilesGroup[6].x - tilesGroup[6].width/2));
+lv2Plant.width = (propsYScaling)*80; lv2Plant.height = (propsYScaling)*163; lv2Plant.amount = floor(random(3, 4)*SpawnMulti); lv2Plant.rotationLock = true;
+lv2Plant.x = (i) => random((tilesGroup[6].x + TileWidth/2), (tilesGroup[6].x - TileWidth/2));
 lv2Plant.y = (i) => random((tilesGroup[6].y + tilesGroup[6].height/4), (tilesGroup[6].y));
 
 // Lamp x1-2 ( lv2Lamp )
 lv2Lamp = new props.Group(); lv2Lamp.image = 'assets/lv2_prop_2.png';
 lv2Lamp.scale = 0.3; lv2Lamp.image.scale = windowHeight/1000;
-lv2Lamp.width = (propsYScaling)*60; lv2Lamp.height = (propsYScaling)*78; lv2Lamp.amount = floor(random(3, 4)); lv2Lamp.rotationLock = true;
-lv2Lamp.x = (i) => random((tilesGroup[6].x + tilesGroup[6].width/2), (tilesGroup[6].x - tilesGroup[6].width/2));
+lv2Lamp.width = (propsYScaling)*60; lv2Lamp.height = (propsYScaling)*78; lv2Lamp.amount = floor(random(1, 2)*SpawnMulti); lv2Lamp.rotationLock = true;
+lv2Lamp.x = (i) => random((tilesGroup[6].x + TileWidth/2), (tilesGroup[6].x - TileWidth/2));
 lv2Lamp.y = (i) => random((tilesGroup[6].y + tilesGroup[6].height/4), (tilesGroup[6].y));
 
 lv2Lamp.overlaps(lv2Plant);
@@ -506,231 +518,231 @@ lv2Lamp.overlaps(lv2Plant);
 // Vent ( lv2Vent ), Random Middle Mounted
 lv2Vent = new props.Group(); lv2Vent.image = 'assets/vent.png'; 
 lv2Vent.scale = 0.2; lv2Vent.image.scale = windowHeight/1000; 
-lv2Vent.width = (propsYScaling)*74; lv2Vent.height = (propsYScaling)*59; lv2Vent.amount = floor(random(3, 2)); 
-lv2Vent.x = (i) => random(tilesGroup[6].x + tilesGroup[6].width/2.1, tilesGroup[6].x - tilesGroup[6].width/2.1); lv2Vent.collider = "none";
+lv2Vent.width = (propsYScaling)*74; lv2Vent.height = (propsYScaling)*59; lv2Vent.amount = floor(random(1, 2)*SpawnMulti); 
+lv2Vent.x = (i) => random(tilesGroup[6].x + TileWidth/2.1, tilesGroup[6].x - TileWidth/2.1); lv2Vent.collider = "none";
 lv2Vent.y = (i) => random(tilesGroup[6].y - tilesGroup[6].height/2.5, tilesGroup[6].y - tilesGroup[6].height/3); lv2Vent.layer = 3;
 
 // vine small x1-8 ( lv2vineS ), Random Top Mounted
 lv2vineS = new props.Group(); lv2vineS.image = 'assets/vine_s.png'; 
 lv2vineS.scale = 0.3; lv2vineS.image.scale = windowHeight/1000; 
-lv2vineS.width = (propsYScaling)*140; lv2vineS.height = (propsYScaling)*71; lv2vineS.amount = floor(random(8, 7)); 
-lv2vineS.x = (i) => random(tilesGroup[6].x + tilesGroup[6].width/2.15, tilesGroup[6].x - tilesGroup[6].width/2.1); lv2vineS.collider = "none";
+lv2vineS.width = (propsYScaling)*140; lv2vineS.height = (propsYScaling)*71; lv2vineS.amount = floor(random(5, 8)*SpawnMulti); 
+lv2vineS.x = (i) => random(tilesGroup[6].x + TileWidth/2.15, tilesGroup[6].x - TileWidth/2.1); lv2vineS.collider = "none";
 lv2vineS.y = (i) => tilesGroup[6].y - tilesGroup[6].height/2.1; lv2vineS.rotation = (i) => random(0, 360); lv2vineS.layer = 3;
 
 // vine medium x2-4 ( lv2vineM ), Random Top Mounted
 lv2vineM = new props.Group(); lv2vineM.image = 'assets/vine_m.png'; 
 lv2vineM.scale = 0.3; lv2vineM.image.scale = windowHeight/1000; 
-lv2vineM.width = (propsYScaling)*140; lv2vineM.height = (propsYScaling)*71; lv2vineM.amount = floor(random(6, 5)); 
-lv2vineM.x = (i) => random(tilesGroup[6].x + tilesGroup[6].width/2.15, tilesGroup[6].x - tilesGroup[6].width/2.1); lv2vineM.collider = "none";
+lv2vineM.width = (propsYScaling)*140; lv2vineM.height = (propsYScaling)*71; lv2vineM.amount = floor(random(2, 4)*SpawnMulti); 
+lv2vineM.x = (i) => random(tilesGroup[6].x + TileWidth/2.15, tilesGroup[6].x - TileWidth/2.1); lv2vineM.collider = "none";
 lv2vineM.y = (i) => tilesGroup[6].y - tilesGroup[6].height/2.1; lv2vineM.rotation = (i) => random(0, 360); lv2vineM.layer = 3;
 
 // vine large x1-2 ( lv2vineL ), Random Top Mounted
 lv2vineL = new props.Group(); lv2vineL.image = 'assets/vine_m.png'; 
 lv2vineL.scale = 0.3; lv2vineL.image.scale = windowHeight/1000; 
-lv2vineL.width = (propsYScaling)*140; lv2vineL.height = (propsYScaling)*71; lv2vineL.amount = floor(random(5, 7)); 
-lv2vineL.x = (i) => random(tilesGroup[6].x + tilesGroup[6].width/2.15, tilesGroup[6].x - tilesGroup[6].width/2.1); lv2vineL.collider = "none";
+lv2vineL.width = (propsYScaling)*140; lv2vineL.height = (propsYScaling)*71; lv2vineL.amount = floor(random(2, 3)*SpawnMulti); 
+lv2vineL.x = (i) => random(tilesGroup[6].x + TileWidth/2.15, tilesGroup[6].x - TileWidth/2.1); lv2vineL.collider = "none";
 lv2vineL.y = (i) => tilesGroup[6].y - tilesGroup[6].height/2.1; lv2vineL.rotation = (i) => random(0, 360); lv2vineL.layer = 3;
 
 // vine fill x2-3 ( lv2fill ), Random Top Mounted
 lv2fill = new props.Group(); lv2fill.image = 'assets/vine_fill.png'; 
 lv2fill.scale = 0.3; lv2fill.image.scale = windowHeight/1000; 
-lv2fill.width = (propsYScaling)*97; lv2fill.height = (propsYScaling)*70; lv2fill.amount = floor(random(7, 8)); 
-lv2fill.x = (i) => random(tilesGroup[6].x + tilesGroup[6].width/2.15, tilesGroup[6].x - tilesGroup[6].width/2.1); lv2fill.collider = "none";
+lv2fill.width = (propsYScaling)*97; lv2fill.height = (propsYScaling)*70; lv2fill.amount = floor(random(2, 3)*SpawnMulti); 
+lv2fill.x = (i) => random(tilesGroup[6].x + TileWidth/2.15, tilesGroup[6].x - TileWidth/2.1); lv2fill.collider = "none";
 lv2fill.y = (i) => tilesGroup[6].y - tilesGroup[6].height/2.1; lv2fill.layer = 3;
 
 // LEVEL 5
 // Potted Daisy x3-4 ( lv3Plant )
 lv3Plant = new props.Group(); lv3Plant.image = 'assets/daisy.png';
 lv3Plant.scale = 0.3; lv3Plant.image.scale = windowHeight/1000;
-lv3Plant.width = (propsYScaling)*50; lv3Plant.height = (propsYScaling)*93; lv3Plant.amount = floor(random(6, 7)); lv3Plant.rotationLock = true;
-lv3Plant.x = (i) => random((tilesGroup[5].x + tilesGroup[5].width/2), (tilesGroup[5].x - tilesGroup[5].width/2));
+lv3Plant.width = (propsYScaling)*50; lv3Plant.height = (propsYScaling)*93; lv3Plant.amount = floor(random(3, 4)*SpawnMulti); lv3Plant.rotationLock = true;
+lv3Plant.x = (i) => random((tilesGroup[5].x + TileWidth/2), (tilesGroup[5].x - TileWidth/2));
 lv3Plant.y = (i) => random((tilesGroup[5].y - tilesGroup[5].height/3), (tilesGroup[5].y - tilesGroup[5].height/2));
 
 // Box S x1-3 ( lv3boxS ), Random
 lv3boxS = new props.Group(); lv3boxS.image = 'assets/box_s.png'; 
 lv3boxS.scale = 0.3; lv3boxS.image.scale = windowHeight/1000; 
-lv3boxS.width = (propsYScaling)*82; lv3boxS.height = (propsYScaling)*53; lv3boxS.amount = floor(random(3, 4)); 
-lv3boxS.x = (i) => random((tilesGroup[5].x + tilesGroup[5].width/2), (tilesGroup[5].x - tilesGroup[5].width/2));
+lv3boxS.width = (propsYScaling)*82; lv3boxS.height = (propsYScaling)*53; lv3boxS.amount = floor(random(3, 4)*SpawnMulti); 
+lv3boxS.x = (i) => random((tilesGroup[5].x + TileWidth/2), (tilesGroup[5].x - TileWidth/2));
 lv3boxS.y = (i) => random((tilesGroup[5].y - tilesGroup[5].height/4), (tilesGroup[5].y));
 
 // Box M x1-2 ( lv3boxS ), Random
 lv3boxM = new props.Group(); lv3boxM.image = 'assets/box_m.png'; 
 lv3boxM.scale = 0.3; lv3boxM.image.scale = windowHeight/1000; 
-lv3boxM.width = (propsYScaling)*102; lv3boxM.height = (propsYScaling)*64; lv3boxM.amount = floor(random(3, 4)); 
-lv3boxM.x = (i) => random((tilesGroup[5].x + tilesGroup[5].width/2), (tilesGroup[5].x - tilesGroup[5].width/2));
+lv3boxM.width = (propsYScaling)*102; lv3boxM.height = (propsYScaling)*64; lv3boxM.amount = floor(random(2, 3)*SpawnMulti); 
+lv3boxM.x = (i) => random((tilesGroup[5].x + TileWidth/2), (tilesGroup[5].x - TileWidth/2));
 lv3boxM.y = (i) => random((tilesGroup[5].y - tilesGroup[5].height/4), (tilesGroup[5].y));
 
 // Box L x2 ( lv3boxL ), Random
 lv3boxL = new props.Group(); lv3boxL.image = 'assets/box_l.png'; 
 lv3boxL.scale = 0.3; lv3boxL.image.scale = windowHeight/1000; 
-lv3boxL.width = (propsYScaling)*136; lv3boxL.height = (propsYScaling)*86; lv3boxL.amount = floor(random(2, 3)); 
-lv3boxL.x = (i) => random((tilesGroup[5].x + tilesGroup[5].width/2), (tilesGroup[5].x - tilesGroup[5].width/2));
+lv3boxL.width = (propsYScaling)*136; lv3boxL.height = (propsYScaling)*86; lv3boxL.amount = floor(random(1, 2)*SpawnMulti); 
+lv3boxL.x = (i) => random((tilesGroup[5].x + TileWidth/2), (tilesGroup[5].x - TileWidth/2));
 lv3boxL.y = (i) => (tilesGroup[5].y + tilesGroup[5].height/3);
 
 // Honeycomb x3 (lv3comb), Random Middle Mounted
 lv3comb = new props.Group(); lv3comb.image = 'assets/hcomb.png'; 
 lv3comb.scale = 0.2; lv3comb.image.scale = windowHeight/1000; 
-lv3comb.width = (propsYScaling)*83; lv3comb.height = (propsYScaling)*67; lv3comb.amount = floor(random(7, 9)); 
-lv3comb.x = (i) => random(tilesGroup[5].x + tilesGroup[5].width/2.4, tilesGroup[5].x - tilesGroup[5].width/2.4); lv3comb.collider = "none";
+lv3comb.width = (propsYScaling)*83; lv3comb.height = (propsYScaling)*67; lv3comb.amount = floor(random(2, 3)*SpawnMulti); 
+lv3comb.x = (i) => random(tilesGroup[5].x + TileWidth/2.4, tilesGroup[5].x - TileWidth/2.4); lv3comb.collider = "none";
 lv3comb.y = (i) => random(tilesGroup[5].y + tilesGroup[5].height/2.2, tilesGroup[5].y - tilesGroup[5].height/3); lv3comb.layer = 4; lv3comb.rotation = (i) => floor(random(0,6)) * 60;
 
 // hive x2-3 ( lv3hive ), Random Top Mounted
 lv3hive = new props.Group(); lv3hive.image = 'assets/hive.png'; 
 lv3hive.scale = 0.3; lv3hive.image.scale = windowHeight/1000; 
-lv3hive.width = (propsYScaling)*61; lv3hive.height = (propsYScaling)*75; lv3hive.amount = floor(random(5, 4)); 
-lv3hive.x = (i) => random(tilesGroup[5].x + tilesGroup[5].width/2.15, tilesGroup[5].x - tilesGroup[6].width/2.1); lv3hive.collider = "none";
+lv3hive.width = (propsYScaling)*61; lv3hive.height = (propsYScaling)*75; lv3hive.amount = floor(random(2, 3)*SpawnMulti); 
+lv3hive.x = (i) => random(tilesGroup[5].x + TileWidth/2.15, tilesGroup[5].x - TileWidth/2.1); lv3hive.collider = "none";
 lv3hive.y = tilesGroup[5].y - tilesGroup[5].height/2.5; lv3hive.layer = 4;
 
 // LEVEL 4
 // Potted Plant x3-4 ( lv4Plant )
 lv4Plant = new props.Group(); lv4Plant.image = 'assets/lv4_plant.png';
 lv4Plant.scale = 0.3; lv4Plant.image.scale = windowHeight/1000;
-lv4Plant.width = (propsYScaling)*66; lv4Plant.height = (propsYScaling)*140; lv4Plant.amount = floor(random(6, 5)); lv4Plant.rotationLock = true;
-lv4Plant.x = (i) => random((tilesGroup[4].x + tilesGroup[4].width/2), (tilesGroup[4].x - tilesGroup[4].width/2));
+lv4Plant.width = (propsYScaling)*66; lv4Plant.height = (propsYScaling)*140; lv4Plant.amount = floor(random(4, 5)*SpawnMulti); lv4Plant.rotationLock = true;
+lv4Plant.x = (i) => random((tilesGroup[4].x + TileWidth/2), (tilesGroup[4].x - TileWidth/2));
 lv4Plant.y = (i) => random((tilesGroup[4].y + tilesGroup[4].height/4), (tilesGroup[4].y));
 
 // lamp x2-4 ( lv4lamp ), Random Top Mounted
 lv4lamp = new props.Group(); lv4lamp.image = 'assets/lv4_lamp.png'; 
 lv4lamp.scale = 0.3; lv4lamp.image.scale = windowHeight/1000; 
-lv4lamp.width = (propsYScaling)*65; lv4lamp.height = (propsYScaling)*64; lv4lamp.amount = floor(random(4, 5)); 
-lv4lamp.x = (i) => random(tilesGroup[4].x + tilesGroup[4].width/2.15, tilesGroup[4].x - tilesGroup[4].width/2.1); lv4lamp.collider = "none";
+lv4lamp.width = (propsYScaling)*65; lv4lamp.height = (propsYScaling)*64; lv4lamp.amount = floor(random(2, 3)*SpawnMulti); 
+lv4lamp.x = (i) => random(tilesGroup[4].x + TileWidth/2.15, tilesGroup[4].x - TileWidth/2.1); lv4lamp.collider = "none";
 lv4lamp.y = tilesGroup[4].y - tilesGroup[4].height/2.5; lv4lamp.layer = 4;
 
 // coffeeStation x1-3 ( lv4coffee ), Random
 lv4coffee = new props.Group(); lv4coffee.image = 'assets/lv4_coffee.png'; 
 lv4coffee.scale = 0.3; lv4coffee.image.scale = windowHeight/1000; 
-lv4coffee.width = (propsYScaling)*61; lv4coffee.height = (propsYScaling)*84; lv4coffee.amount = floor(random(4, 3)); 
-lv4coffee.x = (i) => random((tilesGroup[4].x + tilesGroup[4].width/2), (tilesGroup[4].x - tilesGroup[4].width/2));
+lv4coffee.width = (propsYScaling)*61; lv4coffee.height = (propsYScaling)*84; lv4coffee.amount = floor(random(2, 3)*SpawnMulti); 
+lv4coffee.x = (i) => random((tilesGroup[4].x + TileWidth/2), (tilesGroup[4].x - TileWidth/2));
 lv4coffee.y = (i) => random((tilesGroup[4].y - tilesGroup[4].height/4), (tilesGroup[4].y));
 
 // LEVEL 3
 // Potted Cactus 1 x1-2 ( lv5Cactus1 )
 lv5Cactus1 = new props.Group(); lv5Cactus1.image = 'assets/lv5_plant1.png';
 lv5Cactus1.scale = 0.3; lv5Cactus1.image.scale = windowHeight/1000;
-lv5Cactus1.width = (propsYScaling)*108; lv5Cactus1.height = (propsYScaling)*157; lv5Cactus1.amount = floor(random(4, 5)); lv5Cactus1.rotationLock = true;
-lv5Cactus1.x = (i) => random((tilesGroup[3].x + tilesGroup[3].width/2.3), (tilesGroup[3].x - tilesGroup[4].width/2.3));
+lv5Cactus1.width = (propsYScaling)*108; lv5Cactus1.height = (propsYScaling)*157; lv5Cactus1.amount = floor(random(2, 3)*SpawnMulti); lv5Cactus1.rotationLock = true;
+lv5Cactus1.x = (i) => random((tilesGroup[3].x + TileWidth/2.3), (tilesGroup[3].x - TileWidth/2.3));
 lv5Cactus1.y = (i) => random((tilesGroup[3].y + tilesGroup[3].height/4), (tilesGroup[3].y));
 
 // Potted Cactus 2 x1-2 ( lv5Cactus2 )
 lv5Cactus2 = new props.Group(); lv5Cactus2.image = 'assets/lv5_plant2.png';
 lv5Cactus2.scale = 0.3; lv5Cactus2.image.scale = windowHeight/1000;
-lv5Cactus2.width = (propsYScaling)*88; lv5Cactus2.height = (propsYScaling)*115; lv5Cactus2.amount = floor(random(3, 4)); lv5Cactus2.rotationLock = true;
-lv5Cactus2.x = (i) => random((tilesGroup[3].x + tilesGroup[3].width/2), (tilesGroup[3].x - tilesGroup[4].width/2));
+lv5Cactus2.width = (propsYScaling)*88; lv5Cactus2.height = (propsYScaling)*115; lv5Cactus2.amount = floor(random(2, 3)*SpawnMulti); lv5Cactus2.rotationLock = true;
+lv5Cactus2.x = (i) => random((tilesGroup[3].x + TileWidth/2), (tilesGroup[3].x - TileWidth/2));
 lv5Cactus2.y = (i) => random((tilesGroup[3].y + tilesGroup[3].height/4), (tilesGroup[3].y));
 
 // WaterDispenser ( lv5water ), Random Middle Mounted
 lv5water = new props.Group(); lv5water.image = 'assets/lv5_water.png'; 
 lv5water.scale = 0.3; lv5water.image.scale = windowHeight/1000; 
-lv5water.width = (propsYScaling)*69; lv5water.height = (propsYScaling)*141; lv5water.amount = floor(random(3, 4)); 
-lv5water.x = (i) => random(tilesGroup[3].x + tilesGroup[3].width/2.5, tilesGroup[3].x - tilesGroup[3].width/2.5); lv5water.collider = "none";
+lv5water.width = (propsYScaling)*69; lv5water.height = (propsYScaling)*141; lv5water.amount = floor(random(1, 2)*SpawnMulti); 
+lv5water.x = (i) => random(tilesGroup[3].x + TileWidth/2.5, tilesGroup[3].x - TileWidth/2.5); lv5water.collider = "none";
 lv5water.y = (i) => tilesGroup[3].y - tilesGroup[3].height/4.2; lv5water.layer = 3;
 
 //LEVEL 2
 // Painting_1  x2 ( lv6_paint1 ), Random Middle Mounted
 lv6_paint1 = new props.Group(); lv6_paint1.image = 'assets/lv6_paint1.png'; 
 lv6_paint1.scale = 0.3; lv6_paint1.image.scale = windowHeight/1000; 
-lv6_paint1.width = (propsYScaling)*140; lv6_paint1.height = (propsYScaling)*71; lv6_paint1.amount = floor(random(4, 5)); 
-lv6_paint1.x = (i) => random(tilesGroup[2].x + tilesGroup[2].width/2.1, tilesGroup[2].x - tilesGroup[2].width/2.1); lv6_paint1.collider = "none";
+lv6_paint1.width = (propsYScaling)*140; lv6_paint1.height = (propsYScaling)*71; lv6_paint1.amount = floor(random(3, 4)*SpawnMulti); 
+lv6_paint1.x = (i) => random(tilesGroup[2].x + TileWidth/2.1, tilesGroup[2].x - TileWidth/2.1); lv6_paint1.collider = "none";
 lv6_paint1.y = (i) => random(tilesGroup[2].y, tilesGroup[2].y + tilesGroup[2].height/4); lv6_paint1.layer = 4;
 
 // Painting_2  x2 ( lv6_paint2 ), Random Middle Mounted
 lv6_paint2 = new props.Group(); lv6_paint2.image = 'assets/lv6_paint2.png'; 
 lv6_paint2.scale = 0.3; lv6_paint2.image.scale = windowHeight/1000; 
-lv6_paint2.width = (propsYScaling)*140; lv6_paint2.height = (propsYScaling)*71; lv6_paint2.amount = floor(random(5, 4)); 
-lv6_paint2.x = (i) => random(tilesGroup[2].x + tilesGroup[2].width/2.1, tilesGroup[2].x - tilesGroup[2].width/2.1); lv6_paint2.collider = "none";
+lv6_paint2.width = (propsYScaling)*140; lv6_paint2.height = (propsYScaling)*71; lv6_paint2.amount = floor(random(2, 3)*SpawnMulti); 
+lv6_paint2.x = (i) => random(tilesGroup[2].x + TileWidth/2.1, tilesGroup[2].x - TileWidth/2.1); lv6_paint2.collider = "none";
 lv6_paint2.y = (i) => random(tilesGroup[2].y, tilesGroup[2].y + tilesGroup[2].height/4); lv6_paint2.layer = 4;
 
 // Torch x3 ( lv5torch ), Random Middle Mounted
 lv5torch = new props.Group(); lv5torch.image = 'assets/lv6_light1.png'; 
 lv5torch.scale = 0.3; lv5torch.image.scale = windowHeight/1000; 
-lv5torch.width = (propsYScaling)*50; lv5torch.height = (propsYScaling)*59; lv5torch.amount = floor(random(3, 4)); 
-lv5torch.x = (i) => random(tilesGroup[2].x + tilesGroup[2].width/2.5, tilesGroup[2].x - tilesGroup[2].width/2.5); lv5torch.collider = "none";
+lv5torch.width = (propsYScaling)*50; lv5torch.height = (propsYScaling)*59; lv5torch.amount = floor(random(2, 3)*SpawnMulti); 
+lv5torch.x = (i) => random(tilesGroup[2].x + TileWidth/2.5, tilesGroup[2].x - TileWidth/2.5); lv5torch.collider = "none";
 lv5torch.y = (i) => tilesGroup[2].y - tilesGroup[2].height/4.2; lv5torchlayer = 3;
 
 // chandelier x3 ( lv6_light2 ), Random Top Mounted
 lv6_light2 = new props.Group(); lv6_light2.image = 'assets/lv6_light2.png'; 
 lv6_light2.scale = 0.3; lv6_light2.image.scale = windowHeight/1000; 
-lv6_light2.width = (propsYScaling)*107; lv6_light2.height = (propsYScaling)*66; lv6_light2.amount = floor(random(3, 4)); 
-lv6_light2.x = (i) => random(tilesGroup[2].x + tilesGroup[2].width/2.15, tilesGroup[2].x - tilesGroup[2].width/2.1); lv6_light2.collider = "none";
+lv6_light2.width = (propsYScaling)*107; lv6_light2.height = (propsYScaling)*66; lv6_light2.amount = floor(random(2, 3)*SpawnMulti); 
+lv6_light2.x = (i) => random(tilesGroup[2].x + TileWidth/2.15, tilesGroup[2].x - TileWidth/2.1); lv6_light2.collider = "none";
 lv6_light2.y = tilesGroup[2].y - tilesGroup[2].height/2.5; lv6_light2.layer = 4;
 
 // LEVEL 1
 // wall_decal_1 x3 (lv7_wall1), Random Middle Mounted
 lv7_wall1 = new props.Group(); lv7_wall1.image = 'assets/lv7_wall1.png'; 
 lv7_wall1.scale = 0.2; lv7_wall1.image.scale = windowHeight/1000; 
-lv7_wall1.width = (propsYScaling)*63; lv7_wall1.height = (propsYScaling)*81; lv7_wall1.amount = floor(random(4, 5)); 
-lv7_wall1.x = (i) => random(tilesGroup[1].x + tilesGroup[1].width/2.6, tilesGroup[1].x - tilesGroup[1].width/2.4); lv7_wall1.collider = "none";
+lv7_wall1.width = (propsYScaling)*63; lv7_wall1.height = (propsYScaling)*81; lv7_wall1.amount = floor(random(2, 3)*SpawnMulti); 
+lv7_wall1.x = (i) => random(tilesGroup[1].x + TileWidth/2.6, tilesGroup[1].x - TileWidth/2.4); lv7_wall1.collider = "none";
 lv7_wall1.y = (i) => random(tilesGroup[1].y + tilesGroup[1].height/7, tilesGroup[1].y - tilesGroup[1].height/3); lv7_wall1.layer = 4;
 
 // wall_decal_2 x3 (lv7_wall2), Random Middle Mounted
 lv7_wall2 = new props.Group(); lv7_wall2.image = 'assets/lv7_wall2.png'; 
 lv7_wall2.scale = 0.2; lv7_wall2.image.scale = windowHeight/1000; 
-lv7_wall2.width = (propsYScaling)*99; lv7_wall2.height = (propsYScaling)*59; lv7_wall2.amount = floor(random(4, 2)); 
-lv7_wall2.x = (i) => random(tilesGroup[1].x + tilesGroup[1].width/2.6, tilesGroup[1].x - tilesGroup[1].width/2.4); lv7_wall2.collider = "none";
+lv7_wall2.width = (propsYScaling)*99; lv7_wall2.height = (propsYScaling)*59; lv7_wall2.amount = floor(random(2, 3)*SpawnMulti); 
+lv7_wall2.x = (i) => random(tilesGroup[1].x + TileWidth/2.6, tilesGroup[1].x - TileWidth/2.4); lv7_wall2.collider = "none";
 lv7_wall2.y = (i) => random(tilesGroup[1].y + tilesGroup[1].height/7, tilesGroup[1].y - tilesGroup[1].height/3); lv7_wall2.layer = 4;
 
 // splat_1 x3 (lv7_splat1), Random Middle Mounted
 lv7_splat1 = new props.Group(); lv7_splat1.image = 'assets/lv7_splat1.png'; 
 lv7_splat1.scale = 0.2; lv7_splat1.image.scale = windowHeight/1000; 
-lv7_splat1.width = (propsYScaling)*60; lv7_splat1.height = (propsYScaling)*87; lv7_splat1.amount = floor(random(3, 2)); 
-lv7_splat1.x = (i) => random(tilesGroup[1].x + tilesGroup[1].width/2.6, tilesGroup[1].x - tilesGroup[1].width/2.4); lv7_splat1.collider = "none";
+lv7_splat1.width = (propsYScaling)*60; lv7_splat1.height = (propsYScaling)*87; lv7_splat1.amount = floor(random(2, 3)*SpawnMulti); 
+lv7_splat1.x = (i) => random(tilesGroup[1].x + TileWidth/2.6, tilesGroup[1].x - TileWidth/2.4); lv7_splat1.collider = "none";
 lv7_splat1.y = (i) => random(tilesGroup[1].y + tilesGroup[1].height/2.7, tilesGroup[1].y + tilesGroup[1].height/6); lv7_splat1.layer = 4;
 
 // splat_3 x3 (lv7_splat3), Random Middle Mounted
 lv7_splat3 = new props.Group(); lv7_splat3.image = 'assets/lv7_splat2.png'; 
 lv7_splat3.scale = 0.2; lv7_splat3.image.scale = windowHeight/1000; 
-lv7_splat3.width = (propsYScaling)*53; lv7_splat3.height = (propsYScaling)*80; lv7_splat3.amount = floor(random(3, 2)); 
-lv7_splat3.x = (i) => random(tilesGroup[1].x + tilesGroup[1].width/2.6, tilesGroup[1].x - tilesGroup[1].width/2.4); lv7_splat3.collider = "none";
+lv7_splat3.width = (propsYScaling)*53; lv7_splat3.height = (propsYScaling)*80; lv7_splat3.amount = floor(random(2, 3)*SpawnMulti); 
+lv7_splat3.x = (i) => random(tilesGroup[1].x + TileWidth/2.6, tilesGroup[1].x - TileWidth/2.4); lv7_splat3.collider = "none";
 lv7_splat3.y = (i) => random(tilesGroup[1].y + tilesGroup[1].height/2.7, tilesGroup[1].y + tilesGroup[1].height/3.3); lv7_splat3.layer = 4;
 
 // Potted Plant 1 x1-2 ( l7Plant1 )
 lv7_plant1 = new props.Group(); lv7_plant1.image = 'assets/lv7_plant1.png';
 lv7_plant1.scale = 0.3; lv7_plant1.image.scale = windowHeight/1000; lv7_plant1.collider = 'dynamic'; lv7_plant1.mass= 1;
-lv7_plant1.width = (propsYScaling)*83; lv7_plant1.height = (propsYScaling)*105; lv7_plant1.amount = floor(random(6, 5)); lv7_plant1.rotationLock = true;
-lv7_plant1.x = (i) => random((tilesGroup[1].x + tilesGroup[1].width/2), (tilesGroup[1].x - tilesGroup[1].width/2));
+lv7_plant1.width = (propsYScaling)*83; lv7_plant1.height = (propsYScaling)*105; lv7_plant1.amount = floor(random(2, 3)*SpawnMulti); lv7_plant1.rotationLock = true;
+lv7_plant1.x = (i) => random((tilesGroup[1].x + TileWidth/2), (tilesGroup[1].x - TileWidth/2));
 lv7_plant1.y = (i) => random((tilesGroup[1].y + tilesGroup[1].height/4), (tilesGroup[1].y)); 
 
 // Potted Plant 2 x1-2 ( lv7Plant2 )
 lv7_plant2 = new props.Group(); lv7_plant2.image = 'assets/lv7_plant2.png';
 lv7_plant2.scale = 0.3; lv7_plant2.image.scale = windowHeight/1000; lv7_plant2.collider = 'dynamic'; lv7_plant2.mass= 1;
-lv7_plant2.width = (propsYScaling)*67; lv7_plant2.height = (propsYScaling)*118; lv7_plant2.amount = floor(random(4, 3)); lv7_plant2.rotationLock = true;
-lv7_plant2.x = (i) => random((tilesGroup[1].x + tilesGroup[1].width/2), (tilesGroup[1].x - tilesGroup[1].width/2));
+lv7_plant2.width = (propsYScaling)*67; lv7_plant2.height = (propsYScaling)*118; lv7_plant2.amount = floor(random(2, 3)*SpawnMulti); lv7_plant2.rotationLock = true;
+lv7_plant2.x = (i) => random((tilesGroup[1].x + TileWidth/2), (tilesGroup[1].x - TileWidth/2));
 lv7_plant2.y = (i) => random((tilesGroup[1].y + tilesGroup[1].height/4), (tilesGroup[1].y));
 
 // lightbulb1 x2 ( lv7_light1 ), Random Top Mounted
 lv7_light1 = new props.Group(); lv7_light1.image = 'assets/lv7_light1.png'; 
 lv7_light1.scale = 0.3; lv7_light1.image.scale = windowHeight/1000; 
-lv7_light1.width = (propsYScaling)*107; lv7_light1.height = (propsYScaling)*66; lv7_light1.amount = floor(random(4, 3)); 
-lv7_light1.x = (i) => random(tilesGroup[1].x + tilesGroup[1].width/2.15, tilesGroup[1].x - tilesGroup[2].width/2.1); lv7_light1.collider = "none";
+lv7_light1.width = (propsYScaling)*107; lv7_light1.height = (propsYScaling)*66; lv7_light1.amount = floor(random(2, 3)*SpawnMulti); 
+lv7_light1.x = (i) => random(tilesGroup[1].x + TileWidth/2.15, tilesGroup[1].x - TileWidth/2.1); lv7_light1.collider = "none";
 lv7_light1.y = tilesGroup[1].y - tilesGroup[1].height/2.5; lv7_light1.layer = 4;
 
 // lightbulb2 x2 ( lv7_light2 ), Random Top Mounted
 lv7_light2 = new props.Group(); lv7_light2.image = 'assets/lv7_light2.png'; 
 lv7_light2.scale = 0.3; lv7_light2.image.scale = windowHeight/1000; 
-lv7_light2.width = (propsYScaling)*107; lv7_light2.height = (propsYScaling)*66; lv7_light2.amount = floor(random(3, 4)); 
-lv7_light2.x = (i) => random(tilesGroup[1].x + tilesGroup[1].width/2.15, tilesGroup[1].x - tilesGroup[1].width/2.1); lv7_light2.collider = "none";
+lv7_light2.width = (propsYScaling)*107; lv7_light2.height = (propsYScaling)*66; lv7_light2.amount = floor(random(2, 3)*SpawnMulti); 
+lv7_light2.x = (i) => random(tilesGroup[1].x + TileWidth/2.15, tilesGroup[1].x - TileWidth/2.1); lv7_light2.collider = "none";
 lv7_light2.y = tilesGroup[1].y - tilesGroup[1].height/2.5; lv7_light2.layer = 4;
 
 // LEVEL 0
 // Light x1-2 ( lv8_light )
 lv8_light = new props.Group(); lv8_light.image = 'assets/lv8_light.png';
 lv8_light.scale = 0.3; lv8_light.image.scale = windowHeight/1000;
-lv8_light.width = (propsYScaling)*85; lv8_light.height = (propsYScaling)*79; lv8_light.amount = floor(random(4, 5)); lv8_light.rotationLock = true;
-lv8_light.x = (i) => random((tilesGroup[0].x + tilesGroup[0].width/2), (tilesGroup[0].x - tilesGroup[0].width/2));
+lv8_light.width = (propsYScaling)*85; lv8_light.height = (propsYScaling)*79; lv8_light.amount = floor(random(2, 3)*SpawnMulti); lv8_light.rotationLock = true;
+lv8_light.x = (i) => random((tilesGroup[0].x + TileWidth/2), (tilesGroup[0].x - TileWidth/2));
 lv8_light.y = (i) => random((tilesGroup[0].y + tilesGroup[0].height/4), (tilesGroup[0].y));
 
 // Punching_Bag x1 ( lv8_bag )
 lv8_bag = new props.Group(); lv8_bag.image = 'assets/lv8_bag.png';
 lv8_bag.scale = 0.3; lv8_bag.image.scale = windowHeight/1000;
-lv8_bag.width = (propsYScaling)*69; lv8_bag.height = (propsYScaling)*135; lv8_bag.amount = floor(random(3, 4)); lv8_bag.rotationLock = true;
-lv8_bag.x = (i) => random((tilesGroup[0].x + tilesGroup[0].width/2), (tilesGroup[0].x - tilesGroup[0].width/2));
+lv8_bag.width = (propsYScaling)*69; lv8_bag.height = (propsYScaling)*135; lv8_bag.amount = floor(random(1, 2)*SpawnMulti); lv8_bag.rotationLock = true;
+lv8_bag.x = (i) => random((tilesGroup[0].x + TileWidth/2), (tilesGroup[0].x - TileWidth/2));
 lv8_bag.y = (i) => random((tilesGroup[0].y + tilesGroup[0].height/4), (tilesGroup[0].y));
 
 // Shelf x1-2 ( lv8_shelf )
 lv8_shelf = new props.Group(); lv8_shelf.image = 'assets/lv8_shelf.png';
 lv8_shelf.scale = 0.3; lv8_shelf.image.scale = windowHeight/1000;
-lv8_shelf.width = (propsYScaling)*100; lv8_shelf.height = (propsYScaling)*151; lv8_shelf.amount = floor(random(5, 4)); lv8_shelf.rotationLock = true;
-lv8_shelf.x = (i) => random((tilesGroup[0].x + tilesGroup[0].width/2), (tilesGroup[0].x - tilesGroup[0].width/2));
+lv8_shelf.width = (propsYScaling)*100; lv8_shelf.height = (propsYScaling)*151; lv8_shelf.amount = floor(random(2, 3)*SpawnMulti); lv8_shelf.rotationLock = true;
+lv8_shelf.x = (i) => random((tilesGroup[0].x + TileWidth/2), (tilesGroup[0].x - TileWidth/2));
 lv8_shelf.y = (i) => random((tilesGroup[0].y + tilesGroup[0].height/4), (tilesGroup[0].y));
 
 // Prop Overlap Declarations:
@@ -789,10 +801,10 @@ rat3.collider = 'dynamic'; rat3.scale = npcScale/2 * 0.30; r3direct = 'left'; ra
 rat4.collider = 'dynamic'; rat4.scale = npcScale/2 * 0.30; r4direct = 'right'; rat4.mass = 20; rat4.rotationLock = false; rat4.mirror.x = true
 
 // Teleport Rats to L7?, actually anywhere, based on random seeding
-rat1.x = random((tilesGroup[7].x + tilesGroup[7].width/2), (tilesGroup[7].x - tilesGroup[7].width/2)); rat1.y = random((tilesGroup[7].y + tilesGroup[7].height/2), (tilesGroup[0].y));
-rat2.x = random((tilesGroup[7].x + tilesGroup[7].width/2), (tilesGroup[7].x - tilesGroup[7].width/2)); rat2.y = random((tilesGroup[7].y + tilesGroup[7].height/2), (tilesGroup[0].y));
-rat3.x = random((tilesGroup[7].x + tilesGroup[7].width/2), (tilesGroup[7].x - tilesGroup[7].width/2)); rat3.y = random((tilesGroup[7].y + tilesGroup[7].height/2), (tilesGroup[0].y));
-rat4.x = random((tilesGroup[7].x + tilesGroup[7].width/2), (tilesGroup[7].x - tilesGroup[7].width/2)); rat4.y = random((tilesGroup[7].y + tilesGroup[7].height/2), (tilesGroup[0].y));
+rat1.x = random((tilesGroup[7].x + TileWidth/2), (tilesGroup[7].x - TileWidth/2)); rat1.y = random((tilesGroup[7].y + tilesGroup[7].height/2), (tilesGroup[0].y));
+rat2.x = random((tilesGroup[7].x + TileWidth/2), (tilesGroup[7].x - TileWidth/2)); rat2.y = random((tilesGroup[7].y + tilesGroup[7].height/2), (tilesGroup[0].y));
+rat3.x = random((tilesGroup[7].x + TileWidth/2), (tilesGroup[7].x - TileWidth/2)); rat3.y = random((tilesGroup[7].y + tilesGroup[7].height/2), (tilesGroup[0].y));
+rat4.x = random((tilesGroup[7].x + TileWidth/2), (tilesGroup[7].x - TileWidth/2)); rat4.y = random((tilesGroup[7].y + tilesGroup[7].height/2), (tilesGroup[0].y));
 
 // Rat Smoke Trail
 trail1 = new Group();
@@ -904,33 +916,66 @@ cheese1.overlaps(lion1); cheese1.overlaps(lion2); cheese2.overlaps(lion1); chees
 
 function mouseWheel(e) {
 	camera.y += e.delta;
+
+//console.log("Camera Position:" + camera.y); 
 }
 
 function largeScreenSettings() {
 
-	MobileView = 0;
-	RatFocus == 0
-	camera.x = windowWidth/2; camera.zoom = 2;
+	TileWidth = (width / 1.5)- 10;
+	playarea.w = (width / 1.5)- 10;
+    MinScaleX = 0.3;
 
-	bricks.w = width/3;
-	playarea.w = width/3-width/150;
-	MinScaleX = 0.66666;	
+	if (camera.y <= 255 ) {
+		camera.y = 255
+	} // Top Limit
+
+	if (camera.y >= 526 ) {
+		camera.y = 526
+	} // Bottom Limit
 }
 
 function smallScreenSettings() {
-	MobileView = 1;
-	camera.zoom = 2;
+	camera.zoom = 1.2;
+	
 
 	bricks.w = 500;
 	playarea.w = 500-width/150;
 	MinScaleX = 1.4;
 
-	if (RatFocus==0) { RatFocus=1
+	if (camera.y <= 285 ) {
+		camera.y = 285
+	} // Top Limit
+
+	if (camera.y >= 750 ) {
+		camera.y = 750
+	} // Bottom Limit
+
+}
+
+function xsScreenSettings() {
+		MobileView = 1;
+		camera.zoom = 1.4;
+		
+	    let xsWidth= 125*2;
+		bricks.w = xsWidth;
+		playarea.w = 245;
+		MinScaleX = 0.1;
+
+		if (camera.y <= 300 ) {
+			camera.y = 300
+		} // Top Limit
+
+		if (camera.y >= 680 ) {
+			camera.y = 680
+		} // Bottom Limit
+
+/* if (RatFocus==0) { RatFocus=1
 	} else if (RatFocus==1) { camera.x = rat1.x; camera.y = rat1.y;
   } else if (RatFocus==2) { camera.x = rat2.x; camera.y = rat2.y;
 	} else if (RatFocus==3) { camera.x = rat3.x; camera.y = rat3.y;
   } else if (RatFocus==4) { camera.x = rat4.x; camera.y = rat4.y;
-	}
+	} */
 }
 
 // TODO: enable dynamic resizing
@@ -941,35 +986,38 @@ function smallScreenSettings() {
 function draw() {
 
 // Camera Settings
-if (windowWidth <= 1100) {
+if (windowWidth <= 600){
+    xsScreenSettings();
+} else if (windowWidth >= 600 && windowWidth <= 1100) {
 	smallScreenSettings();
-
+	/*
 	if (mouse.presses() && RatFocus == 1){ RatFocus = 2; 
 	} else if (mouse.presses() && RatFocus == 2){ RatFocus = 3; 
 	} else if (mouse.presses() && RatFocus == 3){ RatFocus = 4; 
   } else if (mouse.presses() && RatFocus == 4){ RatFocus = 1; 
 	}
 
-		// Crow Functions
+		// Cheese Spawn Functions
 	if (CheeseEvent == 0) { CheeseTimer++ }
 	if (CheeseTimer >= 250) { CheeseTimer = 0;
 	const randomDiceRoll4 = Math.floor(Math.random() * 8) + 1;
-	console.log("Cheese Spawn");
+
+
 	// Activate the corresponding function based on the dice roll
 	switch (randomDiceRoll4) {
 	case 1: SpawnLv1cheese(); break; case 2: SpawnLv2cheese(); break;
 	case 3: SpawnLv3cheese(); break; case 4: SpawnLv4cheese(); break;
 	case 5: SpawnLv5cheese(); break; case 6: SpawnLv6cheese(); break;
 	case 7: SpawnLv7cheese(); break; case 8: SpawnLv8cheese(); break;
-	}}
+	}} */
 } else {
 	largeScreenSettings();
-
-	if (mouse.presses() && cheeseToggle == 1){ cheeseToggle = 2; SpawnCheese1();
-	} else if (mouse.presses() && cheeseToggle == 2){ cheeseToggle = 3; SpawnCheese2();
-	} else if (mouse.presses() && cheeseToggle == 3){ cheeseToggle = 1; SpawnCheese3(); }
 }
 
+
+if (mouse.presses() && cheeseToggle == 1){ cheeseToggle = 2; SpawnCheese1();
+} else if (mouse.presses() && cheeseToggle == 2){ cheeseToggle = 3; SpawnCheese2();
+} else if (mouse.presses() && cheeseToggle == 3){ cheeseToggle = 1; SpawnCheese3(); }
 
 // Initialise World Variables
 background('#ede7fd');
@@ -984,7 +1032,7 @@ if (initial == 0) {
 //Preloading, on active memory 
 // NPCs Dynamic Characteristics ( Location, Snap to Ground )
 // Level 1, Cat  
-cat.x = random(tilesGroup[7].x + tilesGroup[7].width/2.1, tilesGroup[7].x - tilesGroup[7].width/2.1);  cat.y = ((tilesGroup[7].y + tilesGroup[7].height/2)-cat.h/2);
+cat.x = random(tilesGroup[7].x + TileWidth/2.1, tilesGroup[7].x - TileWidth/2.1);  cat.y = ((tilesGroup[7].y + tilesGroup[7].height/2)-cat.h/2);
 sloth2R.x = random(tilesGroup[6].x + tilesGroup[6].width/5, tilesGroup[6].x + tilesGroup[6].width/2.4);  sloth2R.y = ((tilesGroup[6].y + tilesGroup[6].height/2)-sloth2R.h/2);
 sloth2L.x = random(tilesGroup[6].x - tilesGroup[6].width/5, tilesGroup[6].x - tilesGroup[6].width/2.4);  sloth2L.y = ((tilesGroup[6].y + tilesGroup[6].height/2)-sloth2L.h/2);
 sloth1R.x = random(tilesGroup[6].x + tilesGroup[6].width/10, tilesGroup[6].x + tilesGroup[6].width/2.7); sloth1R.y = tilesGroup[6].y - tilesGroup[6].height/2.2;
