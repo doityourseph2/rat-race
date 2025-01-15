@@ -196,13 +196,13 @@ if (windowWidth <= 600){
 } else if (windowWidth >= 600 && windowWidth <= 1100) {
 	console.log("Small Size detected"); 
 	TileWidth = 480;
-	camera.y = 545;
+	camera.y = 565;
 	SpawnMulti = 2.5;
 
 } else {
 	console.log("Large Size detected");
 	TileWidth = (width / 1.5)- 10;
-	camera.y = 255;
+	camera.y = 495;
 	SpawnMulti = 4;
 }
 
@@ -838,9 +838,9 @@ pollen3.amount = (i) => floor(random(2,4)); pollen3.x = bee3.x; pollen3.y = bee3
 
 // Weasel Chat Bubbles Spawning
 babble1 = new Group; blah2 = new Group; yap3 = new Group;
-babble1.w = 199; babble1.h = 67; babble1.collider = 'dynamic'; babble1.life = 50; babble1.amount = (i) => floor(random(1,1)); babble1.scale = (i) => random(0.20,0.70); babble1.image = 'assets/blah_1.png'; babble1.mass = 15;
-blah2.w = 141; blah2.h = 67; blah2.collider = 'dynamic'; blah2.life = 50; blah2.amount = (i) => floor(random(1,1)); blah2.scale = (i) => random(0.20,0.70); blah2.image = 'assets/blah_2.png'; blah2.mass = 15;
-yap3.w = 110; yap3.h = 67; yap3.collider = 'dynamic'; yap3.life = 50; yap3.amount = (i) => floor(random(1,1)); yap3.scale = (i) => random(0.20,0.70); yap3.image = 'assets/blah_3.png'; yap3.mass = 15;
+babble1.w = 199; babble1.h = 67; babble1.collider = 'dynamic'; babble1.life = 50; babble1.amount = (i) => floor(random(1,1)*SpawnMulti); babble1.scale = (i) => random(0.20,0.70); babble1.image = 'assets/blah_1.png'; babble1.mass = 15;
+blah2.w = 141; blah2.h = 67; blah2.collider = 'dynamic'; blah2.life = 50; blah2.amount = (i) => floor(random(1,1)*SpawnMulti); blah2.scale = (i) => random(0.20,0.70); blah2.image = 'assets/blah_2.png'; blah2.mass = 15;
+yap3.w = 110; yap3.h = 67; yap3.collider = 'dynamic'; yap3.life = 50; yap3.amount = (i) => floor(random(1,1)*SpawnMulti); yap3.scale = (i) => random(0.20,0.70); yap3.image = 'assets/blah_3.png'; yap3.mass = 15;
 
 babble1.overlaps(lv4Plant); babble1.overlaps(lv4coffee); babble1.overlaps(lv4lamp);
 blah2.overlaps(lv4Plant); blah2.overlaps(lv4coffee); blah2.overlaps(lv4lamp);
@@ -848,8 +848,8 @@ yap3.overlaps(lv4Plant); yap3.overlaps(lv4coffee); yap3.overlaps(lv4lamp);
 
 //Peacock Props Spawning
 trophy1 = new Group; trophy2 = new Group;
-trophy1.w = 130; trophy1.h = 80; trophy1.collider = 'dynamic'; trophy1.life = 300; trophy1.amount = (i) => floor(random(1,1)); trophy1.scale = (i) => random(0.25,0.45); trophy1.image = 'assets/lv6_trophy1.png'; trophy1.mass = 15;
-trophy2.w = 87; trophy2.h = 99; trophy2.collider = 'dynamic'; trophy2.life = 300; trophy2.amount = (i) => floor(random(1,1)); trophy2.scale = (i) => random(0.25,0.45); trophy2.image = 'assets/lv6_trophy2.png'; trophy2.mass = 15;
+trophy1.w = 130; trophy1.h = 80; trophy1.collider = 'dynamic'; trophy1.life = 300; trophy1.amount = (i) => floor(random(1,1)*SpawnMulti); trophy1.scale = (i) => random(0.25,0.45); trophy1.image = 'assets/lv6_trophy1.png'; trophy1.mass = 15;
+trophy2.w = 87; trophy2.h = 99; trophy2.collider = 'dynamic'; trophy2.life = 300; trophy2.amount = (i) => floor(random(1,1)*SpawnMulti); trophy2.scale = (i) => random(0.25,0.45); trophy2.image = 'assets/lv6_trophy2.png'; trophy2.mass = 15;
 
 // NPCs Static Characteristics
 // Level 1, Cat  
