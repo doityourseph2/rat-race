@@ -938,7 +938,7 @@ function touchStarted() {
     touchStartY = touches[0].y;
 }
 
-let sensitivity = 0.2;
+let sensitivity = 0.6;
 let invertControls = true;
 
 function touchMoved() {
@@ -1093,9 +1093,9 @@ if (windowWidth <= 600){
 }
 
 
-if (mouse.presses() && cheeseToggle == 1){ cheeseToggle = 2; SpawnCheese1();
-} else if (mouse.presses() && cheeseToggle == 2){ cheeseToggle = 3; SpawnCheese2();
-} else if (mouse.presses() && cheeseToggle == 3){ cheeseToggle = 1; SpawnCheese3(); }
+if (mouse.released() && cheeseToggle == 1){ cheeseToggle = 2; SpawnCheese1();
+} else if (mouse.released() && cheeseToggle == 2){ cheeseToggle = 3; SpawnCheese2();
+} else if (mouse.released() && cheeseToggle == 3){ cheeseToggle = 1; SpawnCheese3(); }
 
 
 
