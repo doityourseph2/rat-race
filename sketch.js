@@ -938,14 +938,14 @@ function touchStarted() {
     touchStartY = touches[0].y;
 }
 
-let sensitivity = 0.7;
+let sensitivity = 0.3;
 
 function touchMoved() {
     let touchX = touches[0].x;
     let touchY = touches[0].y;
 
-    let deltaX = -(touchX - touchStartX) * sensitivity;
-    let deltaY = -(touchY - touchStartY) * sensitivity;
+    let deltaX = (touchX - touchStartX) * sensitivity;
+    let deltaY = (touchY - touchStartY) * sensitivity;
 
     camera.x += deltaX;
     camera.y += deltaY;
