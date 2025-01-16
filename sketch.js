@@ -171,13 +171,13 @@ function preload() {
 	lion2.addAnis({ idle: { row: 0, frames: 10 }, active: { row: 1, frames: 10 }}); lion2.changeAni('idle'); 
 }
 
-function keyPressed() {
+/*function keyPressed() {
 	if (key === 'd') {
 	  debugMode = !debugMode;
 	  allSprites.debug = !allSprites.debug;  
 	  console.log("debugMode:", debugMode);
 	}
-}
+} */
 
 function setup() {
 
@@ -190,24 +190,24 @@ textAlign(CENTER, TOP);
 
 // Initialise TileWidth -> Spawning Bounding Boxes based on window size
 if (windowWidth <= 600){
-	console.log("XS Size detected"); 
+	//console.log("XS Size detected"); 
 	TileWidth = 240;
 	camera.y = 452;
 	SpawnMulti = 1;
 
 } else if (windowWidth >= 600 && windowWidth <= 1100) {
-	console.log("Small Size detected"); 
+	//console.log("Small Size detected"); 
 	TileWidth = 480;
 	camera.y = 565;
 	SpawnMulti = 2;
 
 } else if (windowWidth >= 1100 && windowWidth <= 2559) {
-	console.log("Large Size detected");
+	//console.log("Large Size detected");
 	TileWidth = (width / 1.5)- 10;
 	camera.y = 495;
 	SpawnMulti = 5;
 } else {
-	console.log("Ultra Wide Size detected");
+	//console.log("Ultra Wide Size detected");
 	TileWidth = (width / 1.5)- 10;
 	camera.y = 495;
 	SpawnMulti = 5;
@@ -961,7 +961,7 @@ function mouseWheel(e) {
 }
 
 function touchStarted() {
-    console.log("touch started");
+    //console.log("touch started");
     touchStartX = touches[0].x;
     touchStartY = touches[0].y;
 }
@@ -1108,7 +1108,7 @@ function draw() {
 
 	if (kb.presses('z')) {
 		ZoomLevel = ZoomLevel === 0 ? 1 : 0;
-		console.log("zoom toggled");
+		//console.log("zoom toggled");
 	}
 
 // Camera Settings
