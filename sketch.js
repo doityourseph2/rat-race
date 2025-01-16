@@ -939,20 +939,25 @@ function touchStarted() {
 }
 
 let sensitivity = 0.1;
+let invertControls = true;
 
 function touchMoved() {
     let touchX = touches[0].x;
     let touchY = touches[0].y;
 
-    let deltaX = -(touchX - touchStartX) * sensitivity;
-    let deltaY = -(touchY - touchStartY) * sensitivity;
+    let deltaX = (touchX - touchStartX) * sensitivity;
+    let deltaY = (touchY - touchStartY) * sensitivity;
+
+    if (invertControls) {
+        deltaX = -deltaX;
+        deltaY = -deltaY;
+    }
 
     camera.x += deltaX;
     camera.y += deltaY;
 
     touchStartX = touchX;
     touchStartY = touchY;
-
 }
 
 function ultrawideScreenSettings() {
