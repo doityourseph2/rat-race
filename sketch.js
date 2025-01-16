@@ -35,8 +35,9 @@ let bgmTimer = 0; let ambianceTimer = 0; let stepperTimer = 0;
 
 //Mobile Camera System
 let MobileView = 0; let ZoomLevel = 0; let CheeseEvent = 0; let CheeseTimer = 0; let TileWidth = 0; let SpawnMulti = 0;
-let touchStartX, touchStartY; let touchStartDistance;
-
+let touchStartDistance; let sensitivity = 0.0; let invertControls = true;
+let touchStartX, touchStartY; let touchMoveX, touchMoveY; let touchEndX, touchEndY;
+ 
 // Lift Option Split Randomiser
 function LiftRandomise() {
 	L6Split = [5, 7][floor(random() * 2)]; L5Split = [4, 6][floor(random() * 2)];
@@ -204,12 +205,12 @@ if (windowWidth <= 600){
 	console.log("Large Size detected");
 	TileWidth = (width / 1.5)- 10;
 	camera.y = 495;
-	SpawnMulti = 4;
+	SpawnMulti = 5;
 } else {
 	console.log("Ultra Wide Size detected");
 	TileWidth = (width / 1.5)- 10;
 	camera.y = 495;
-	SpawnMulti = 4;
+	SpawnMulti = 5;
 }
 
 
@@ -284,10 +285,14 @@ tilesGroup = new Tiles(
 
 // New Tile Group Text Names
 tilesGroup.textSize = height/20;
-tilesGroup[0].text = "8"; tilesGroup[0].textColor = '#FFE6C1'; tilesGroup[1].text = "7"; tilesGroup[1].textColor = '#FCF3F6'; 
-tilesGroup[2].text = "6"; tilesGroup[2].textColor = '#f7d5ff'; tilesGroup[3].text = "5"; tilesGroup[3].textColor = '#e0f6fe';
-tilesGroup[4].text = "4"; tilesGroup[4].textColor = '#A8FFF1'; tilesGroup[5].text = "3"; tilesGroup[5].textColor = '#fff0d0';
-tilesGroup[6].text = "2"; tilesGroup[6].textColor = '#FBFAFF'; tilesGroup[7].text = "1"; tilesGroup[7].textColor = '#82C3BB';
+tilesGroup[0].text = "8"; tilesGroup[0].textColor = 'rgba(255, 230, 193, 0.6)'; // #FFE6C1 with 60% opacity
+tilesGroup[1].text = "7"; tilesGroup[1].textColor = 'rgba(252, 243, 246, 0.6)'; // #FCF3F6 with 60% opacity
+tilesGroup[2].text = "6"; tilesGroup[2].textColor = 'rgba(247, 213, 255, 0.6)'; // #f7d5ff with 60% opacity
+tilesGroup[3].text = "5"; tilesGroup[3].textColor = 'rgba(224, 246, 254, 0.6)'; // #e0f6fe with 60% opacity
+tilesGroup[4].text = "4"; tilesGroup[4].textColor = 'rgba(168, 255, 241, 0.6)'; // #A8FFF1 with 60% opacity
+tilesGroup[5].text = "3"; tilesGroup[5].textColor = 'rgba(255, 240, 208, 0.6)'; // #fff0d0 with 60% opacity
+tilesGroup[6].text = "2"; tilesGroup[6].textColor = 'rgba(251, 250, 255, 0.6)'; // #FBFAFF with 60% opacity
+tilesGroup[7].text = "1"; tilesGroup[7].textColor = 'rgba(130, 195, 187, 0.6)'; // #82C3BB with 60% opacity
 	
 
 // Building Outline Generation
@@ -922,6 +927,29 @@ cheese1.overlaps(lion1); cheese1.overlaps(lion2); cheese2.overlaps(lion1); chees
 
 }
 
+function touchStart(event) {
+	touchStartX = event.touches[0].clientX;
+	touchStartY = event.touches[0].clientY;
+  }
+  
+  function touchMove(event) {
+	touchMoveX = event.touches[0].clientX;
+	touchMoveY = event.touches[0].clientY;
+	// Debounce touch move events to reduce latency
+	setTimeout(() => {
+	  // Handle touch move event
+	}, 50);
+  }
+  
+  function touchEnd(event) {
+	touchEndX = event.touches[0].clientX;
+	touchEndY = event.touches[0].clientY;
+	// Throttle touch end events to reduce latency
+	setTimeout(() => {
+	  // Handle touch end event
+	}, 750);
+  }
+
 function mouseWheel(e) {
     camera.x += e.deltaX;
     camera.y += e.deltaY;
@@ -938,8 +966,7 @@ function touchStarted() {
     touchStartY = touches[0].y;
 }
 
-let sensitivity = 0.6;
-let invertControls = true;
+
 
 function touchMoved() {
     let touchX = touches[0].x;
@@ -964,6 +991,7 @@ function ultrawideScreenSettings() {
 	TileWidth = (width / 1.5)- 10;
 	playarea.w = (width / 1.5)- 10;
     MinScaleX = 0.3;
+	sensitivity = 0.8;
 
 	camera.zoom = 2;
 
@@ -991,6 +1019,7 @@ function largeScreenSettings() {
 	TileWidth = (width / 1.5)- 10;
 	playarea.w = (width / 1.5)- 10;
     MinScaleX = 0.3;
+	sensitivity = 0.8;
 	
 	//Zoomed In - XL
 	camera.zoom = 2;
@@ -1015,14 +1044,14 @@ function largeScreenSettings() {
 
 function smallScreenSettings() {
 	camera.zoom = 2;
-	
+	sensitivity = 0.8;
 
 	bricks.w = 500;
 	playarea.w = 500-width/150;
 	MinScaleX = 1.4;
 
-	if (camera.y <= 270 ) {
-		camera.y = 270
+	if (camera.y <= 170 ) {
+		camera.y = 170
 	} // Top Limit
 
 	if (camera.y >= 852 ) {
@@ -1040,7 +1069,8 @@ function smallScreenSettings() {
 
 function xsScreenSettings() {
 		camera.zoom = 2;
-		
+		sensitivity = 0.6;
+
 	    let xsWidth= 125*2;
 		bricks.w = xsWidth;
 		playarea.w = 245;
@@ -1093,7 +1123,7 @@ if (windowWidth <= 600){
 }
 
 
-if (mouse.presses() && cheeseToggle == 1){ cheeseToggle = 2; SpawnCheese1();
+       if (mouse.presses() && cheeseToggle == 1){ cheeseToggle = 2; SpawnCheese1();
 } else if (mouse.presses() && cheeseToggle == 2){ cheeseToggle = 3; SpawnCheese2();
 } else if (mouse.presses() && cheeseToggle == 3){ cheeseToggle = 1; SpawnCheese3(); }
 
