@@ -186,8 +186,6 @@ frameRate(60);
 textFont(adLibFont);
 textAlign(CENTER, TOP);
 
-document.addEventListener('touchmove', touchMove);
-
 // Initialise TileWidth -> Spawning Bounding Boxes based on window size
 if (windowWidth <= 600){
 	console.log("XS Size detected"); 
@@ -213,7 +211,6 @@ if (windowWidth <= 600){
 	SpawnMulti = 4;
 }
 
-// Camera Zoom Slider
 
 
 // p5play.renderStats = true;
@@ -925,32 +922,14 @@ cheese1.overlaps(lion1); cheese1.overlaps(lion2); cheese2.overlaps(lion1); chees
 }
 
 function mouseWheel(e) {
-    camera.x += e.deltaX;
+
     camera.y += e.deltaY;
 
     if (kb.pressing('alt')) {
         camera.zoom -= e.deltaY * 0.01;
     }
-
-	console.log("Camera Vertical Y:" + camera.y); 
-	console.log("Camera Horizontal X:" + camera.x); 
-
 }
 
-function touchMove(e) {
-    // Get the touch event data
-    var touch = e.touches[0];
-    var deltaY = touch.clientY - touch.clientY;
-
-    // Update the camera position
-    camera.x += deltaY;
-    camera.y += deltaY;
-
-    // Update the zoom level
-    if (kb.pressing('alt')) {
-        camera.zoom -= deltaY * 0.01;
-    }
-}
 
 function ultrawideScreenSettings() {
 	TileWidth = (width / 1.5)- 10;
