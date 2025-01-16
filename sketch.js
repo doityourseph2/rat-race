@@ -34,7 +34,7 @@ let adLibFont;
 let bgmTimer = 0; let ambianceTimer = 0; let stepperTimer = 0;
 
 //Mobile Camera System
-let MobileView = 0; let ZoomLevel = 0; let CheeseEvent = 0; let CheeseTimer = 0; let TileWidth = 0; let SpawnMulti = 0;
+let MobileView = 0; let RatFocus = 0; let CheeseEvent = 0; let CheeseTimer = 0; let TileWidth = 0; let SpawnMulti = 0;
 
 // Lift Option Split Randomiser
 function LiftRandomise() {
@@ -197,21 +197,14 @@ if (windowWidth <= 600){
 	console.log("Small Size detected"); 
 	TileWidth = 480;
 	camera.y = 565;
-	SpawnMulti = 2;
+	SpawnMulti = 2.5;
 
-} else if (windowWidth >= 1100 && windowWidth <= 2559) {
+} else {
 	console.log("Large Size detected");
 	TileWidth = (width / 1.5)- 10;
 	camera.y = 495;
 	SpawnMulti = 4;
-} else {
-	console.log("Ultra Wide Size detected");
-	TileWidth = (width / 1.5)- 10;
-	camera.y = 495;
-	SpawnMulti = 4;
 }
-
-
 
 // p5play.renderStats = true;
 // allSprites.pixelPerfect = true;
@@ -224,7 +217,7 @@ if (windowWidth <= 600){
 
 	// Gradient Image is ( 1811 x 815 )
 	GradScaleX = (windowWidth/1811)*2; GradScaleY = (windowHeight/815)*1.5;
-	gradient.image.scale.x = GradScaleX; gradient.image.scale.y = 10;
+	gradient.image.scale.x = GradScaleX; gradient.image.scale.y = GradScaleY;
 
 	// Clouds Generation
 cloud1 = new Sprite(); cloud1.amount = 1; cloud1.scale = windowHeight/1800; cloud1.x = (random(windowWidth-windowWidth-(windowWidth/32), windowWidth/2)); cloud1.layer = 1;
@@ -922,132 +915,68 @@ cheese1.overlaps(lion1); cheese1.overlaps(lion2); cheese2.overlaps(lion1); chees
 }
 
 function mouseWheel(e) {
-    camera.x += e.deltaX;
-    camera.y += e.deltaY;
+	camera.y += e.delta;
 
-    if (kb.pressing('alt')) {
-        camera.zoom -= e.deltaY * 0.01;
-    }
-
+//console.log("Camera Position:" + camera.y); 
 }
-
-function touchMoved() {
-    var touch = touches[0];
-    var deltaX = touch.clientX - pmouseX;
-    var deltaY = touch.clientY - pmouseY;
-
-    camera.x += deltaX;
-    camera.y += deltaY;
-
-    if (keyIsPressed && key == 'alt') {
-        camera.zoom -= deltaY * 0.01;
-    }
-}
-
-function ultrawideScreenSettings() {
-	TileWidth = (width / 1.5)- 10;
-	playarea.w = (width / 1.5)- 10;
-    MinScaleX = 0.3;
-
-	camera.zoom = 2;
-
-	if (camera.y <= 220) {
-		camera.y = 220
-	} // Top Limit
-
-	if (camera.y >= 925 ) {
-		camera.y = 925
-	} // Bottom Limit
-
-	if (camera.x <= 600 ) {
-		camera.x = 600
-	} // Left Limit
-
-	if (camera.x >= 1960 ) {
-		camera.x = 1960
-	} // Right Limit
-
-}
-
 
 function largeScreenSettings() {
 
 	TileWidth = (width / 1.5)- 10;
 	playarea.w = (width / 1.5)- 10;
     MinScaleX = 0.3;
-	
-	//Zoomed In - XL
-	camera.zoom = 2;
 
-	if (camera.y <= 220) {
-		camera.y = 220
+	if (camera.y <= 255 ) {
+		camera.y = 255
 	} // Top Limit
 
-	if (camera.y >= 925 ) {
-		camera.y = 925
+	if (camera.y >= 526 ) {
+		camera.y = 526
 	} // Bottom Limit
-
-	if (camera.x <= 461 ) {
-		camera.x = 461
-	} // Left Limit
-
-	if (camera.x >= 1450 ) {
-		camera.x = 1450
-	} // Right Limit
-	}
-
+}
 
 function smallScreenSettings() {
-	camera.zoom = 2;
+	camera.zoom = 1.2;
 	
 
 	bricks.w = 500;
 	playarea.w = 500-width/150;
 	MinScaleX = 1.4;
 
-	if (camera.y <= 270 ) {
-		camera.y = 270
+	if (camera.y <= 285 ) {
+		camera.y = 285
 	} // Top Limit
 
-	if (camera.y >= 852 ) {
-		camera.y = 852
+	if (camera.y >= 750 ) {
+		camera.y = 750
 	} // Bottom Limit
 
-	if (camera.x <= 209 ) {
-		camera.x = 209
-	} // Left Limit
-
-	if (camera.x >= 573 ) {
-		camera.x = 573
-	} // Right Limit
 }
 
 function xsScreenSettings() {
-		camera.zoom = 2;
+		MobileView = 1;
+		camera.zoom = 1.4;
 		
 	    let xsWidth= 125*2;
 		bricks.w = xsWidth;
 		playarea.w = 245;
 		MinScaleX = 0.1;
 
-		if (camera.y <= 190 ) {
-			camera.y = 190
+		if (camera.y <= 300 ) {
+			camera.y = 300
 		} // Top Limit
 
 		if (camera.y >= 680 ) {
 			camera.y = 680
 		} // Bottom Limit
 
-		if (camera.x <= 99 ) {
-			camera.x = 99
-		} // Left Limit
-	
-		if (camera.x >= 295 ) {
-			camera.x = 295
-		} // Right Limit
-	}
-
-
+/* if (RatFocus==0) { RatFocus=1
+	} else if (RatFocus==1) { camera.x = rat1.x; camera.y = rat1.y;
+  } else if (RatFocus==2) { camera.x = rat2.x; camera.y = rat2.y;
+	} else if (RatFocus==3) { camera.x = rat3.x; camera.y = rat3.y;
+  } else if (RatFocus==4) { camera.x = rat4.x; camera.y = rat4.y;
+	} */
+}
 
 // TODO: enable dynamic resizing
 // function windowResized() {
@@ -1056,32 +985,39 @@ function xsScreenSettings() {
 
 function draw() {
 
-	//console.log ("Camera X:" + camera.x);
-	//console.log ("Camera Y:" + camera.y);
-	console.log ("Zoom Level:" + ZoomLevel);
-
-	if (kb.presses('z')) {
-		ZoomLevel = ZoomLevel === 0 ? 1 : 0;
-		console.log("zoom toggled");
-	}
-
 // Camera Settings
 if (windowWidth <= 600){
     xsScreenSettings();
 } else if (windowWidth >= 600 && windowWidth <= 1100) {
 	smallScreenSettings();
-} else if (windowWidth >= 1100 && windowWidth <= 2000) {
-	largeScreenSettings();
+	/*
+	if (mouse.presses() && RatFocus == 1){ RatFocus = 2; 
+	} else if (mouse.presses() && RatFocus == 2){ RatFocus = 3; 
+	} else if (mouse.presses() && RatFocus == 3){ RatFocus = 4; 
+  } else if (mouse.presses() && RatFocus == 4){ RatFocus = 1; 
+	}
+
+		// Cheese Spawn Functions
+	if (CheeseEvent == 0) { CheeseTimer++ }
+	if (CheeseTimer >= 250) { CheeseTimer = 0;
+	const randomDiceRoll4 = Math.floor(Math.random() * 8) + 1;
+
+
+	// Activate the corresponding function based on the dice roll
+	switch (randomDiceRoll4) {
+	case 1: SpawnLv1cheese(); break; case 2: SpawnLv2cheese(); break;
+	case 3: SpawnLv3cheese(); break; case 4: SpawnLv4cheese(); break;
+	case 5: SpawnLv5cheese(); break; case 6: SpawnLv6cheese(); break;
+	case 7: SpawnLv7cheese(); break; case 8: SpawnLv8cheese(); break;
+	}} */
 } else {
-	ultrawideScreenSettings();
+	largeScreenSettings();
 }
 
 
 if (mouse.presses() && cheeseToggle == 1){ cheeseToggle = 2; SpawnCheese1();
 } else if (mouse.presses() && cheeseToggle == 2){ cheeseToggle = 3; SpawnCheese2();
 } else if (mouse.presses() && cheeseToggle == 3){ cheeseToggle = 1; SpawnCheese3(); }
-
-
 
 // Initialise World Variables
 background('#ede7fd');
