@@ -938,7 +938,7 @@ function touchStarted() {
     touchStartY = touches[0].y;
 }
 
-let sensitivity = 0.1;
+let sensitivity = 0.2;
 let invertControls = true;
 
 function touchMoved() {
