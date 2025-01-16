@@ -186,6 +186,8 @@ frameRate(60);
 textFont(adLibFont);
 textAlign(CENTER, TOP);
 
+document.addEventListener('touchmove', touchMove);
+
 // Initialise TileWidth -> Spawning Bounding Boxes based on window size
 if (windowWidth <= 600){
 	console.log("XS Size detected"); 
@@ -933,6 +935,21 @@ function mouseWheel(e) {
 	console.log("Camera Vertical Y:" + camera.y); 
 	console.log("Camera Horizontal X:" + camera.x); 
 
+}
+
+function touchMove(e) {
+    // Get the touch event data
+    var touch = e.touches[0];
+    var deltaY = touch.clientY - touch.clientY;
+
+    // Update the camera position
+    camera.x += deltaY;
+    camera.y += deltaY;
+
+    // Update the zoom level
+    if (kb.pressing('alt')) {
+        camera.zoom -= deltaY * 0.01;
+    }
 }
 
 function ultrawideScreenSettings() {
