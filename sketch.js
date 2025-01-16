@@ -36,6 +36,7 @@ let bgmTimer = 0; let ambianceTimer = 0; let stepperTimer = 0;
 //Mobile Camera System
 let MobileView = 0; let ZoomLevel = 0; let CheeseEvent = 0; let CheeseTimer = 0; let TileWidth = 0; let SpawnMulti = 0;
 let touchStartX, touchStartY; let touchStartDistance;
+
 // Lift Option Split Randomiser
 function LiftRandomise() {
 	L6Split = [5, 7][floor(random() * 2)]; L5Split = [4, 6][floor(random() * 2)];
@@ -932,46 +933,26 @@ function mouseWheel(e) {
 }
 
 function touchStarted() {
-    if (touches.length === 2) {
-        touchStartX = (touches[0].x + touches[1].x) / 2;
-        touchStartY = (touches[0].y + touches[1].y) / 2;
-        touchStartDistance = dist(touches[0].x, touches[0].y, touches[1].x, touches[1].y);
-    } else {
-        touchStartX = touches[0].x;
-        touchStartY = touches[0].y;
-    }
+    console.log("touch started");
+    touchStartX = touches[0].x;
+    touchStartY = touches[0].y;
 }
 
+let sensitivity = 0.7;
+
 function touchMoved() {
-    if (touches.length === 2) {
-        let touchX = (touches[0].x + touches[1].x) / 2;
-        let touchY = (touches[0].y + touches[1].y) / 2;
-        let touchDistance = dist(touches[0].x, touches[0].y, touches[1].x, touches[1].y);
+    let touchX = touches[0].x;
+    let touchY = touches[0].y;
 
-        let deltaX = touchX - touchStartX;
-        let deltaY = touchY - touchStartY;
-        let deltaDistance = touchDistance - touchStartDistance;
+    let deltaX = -(touchX - touchStartX) * sensitivity;
+    let deltaY = -(touchY - touchStartY) * sensitivity;
 
-        camera.x += deltaX;
-        camera.y += deltaY;
-        camera.zoom -= deltaDistance * 0.01;
+    camera.x += deltaX;
+    camera.y += deltaY;
 
-        touchStartX = touchX;
-        touchStartY = touchY;
-        touchStartDistance = touchDistance;
-    } else {
-        let touchX = touches[0].x;
-        let touchY = touches[0].y;
+    touchStartX = touchX;
+    touchStartY = touchY;
 
-        let deltaX = touchX - touchStartX;
-        let deltaY = touchY - touchStartY;
-
-        camera.x += deltaX;
-        camera.y += deltaY;
-
-        touchStartX = touchX;
-        touchStartY = touchY;
-    }
 }
 
 function ultrawideScreenSettings() {
