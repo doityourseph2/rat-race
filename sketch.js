@@ -922,14 +922,27 @@ cheese1.overlaps(lion1); cheese1.overlaps(lion2); cheese2.overlaps(lion1); chees
 }
 
 function mouseWheel(e) {
-
+    camera.x += e.deltaX;
     camera.y += e.deltaY;
 
     if (kb.pressing('alt')) {
         camera.zoom -= e.deltaY * 0.01;
     }
+
 }
 
+function touchMoved() {
+    var touch = touches[0];
+    var deltaX = touch.clientX - pmouseX;
+    var deltaY = touch.clientY - pmouseY;
+
+    camera.x += deltaX;
+    camera.y += deltaY;
+
+    if (keyIsPressed && key == 'alt') {
+        camera.zoom -= deltaY * 0.01;
+    }
+}
 
 function ultrawideScreenSettings() {
 	TileWidth = (width / 1.5)- 10;
