@@ -209,13 +209,13 @@ if (windowWidth <= 600){
 
 } else if (windowWidth >= 1339 && windowWidth <= 2559) {
 	console.log("Large Size detected");
-	TileWidth = (width / 1.5)- 310;
+	TileWidth = 650;
 	camera.y = 775;
 	SpawnMulti = 3;
 
 } else if (windowWidth >= 2560) {
 	console.log("Ultra Wide Size detected");
-	TileWidth = (width / 1.5)-1100;
+	TileWidth = 606;
 	camera.y = 907;
 	SpawnMulti = 3;
 }
@@ -1002,8 +1002,8 @@ function ultrawideScreenSettings() {
 
 	camera.zoom = 2.7;
 	bricks.w = 650;
-	TileWidth = (width / 1.5)-1100;
-	playarea.w = (width / 1.5)-1100;
+	TileWidth = 606;
+	playarea.w = 606;
     MinScaleX = 0.1;
 	sensitivity = 0.8;
 
@@ -1031,8 +1031,8 @@ function largeScreenSettings() {
 
 	camera.zoom = 1.6;
 	bricks.w = 650;
-	TileWidth = (width / 1.5)- 310;
-	playarea.w = (width / 1.5)- 310;
+	TileWidth = 650;
+	playarea.w = 650;
     MinScaleX = 0.2;
 	sensitivity = 0.8;
 	
@@ -1145,6 +1145,7 @@ function draw() {
 
 	console.log ("Camera X:" + camera.x);
 	console.log ("Camera Y:" + camera.y);
+	console.log (TileWidth);
 	//console.log ("Zoom Level:" + ZoomLevel);
 
 
