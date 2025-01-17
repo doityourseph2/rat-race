@@ -262,7 +262,8 @@ cloud7.image = 'assets/cloud_' + floor(random(2, 9))+ '.png'; cloud7.width = win
 // Building Generation
 bricks = new Group();
 bricks.w = 500;
-bricks.h = 116;
+// TODO: floor height should not be dynamic
+bricks.h = height/9;
 bricks.tile = '=';
 bricks.textColor = 'white';
 bricks.textSize = height/10;
