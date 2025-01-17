@@ -128,7 +128,7 @@ function preload() {
 	sloth1R = new Sprite(0, 0, 446, 446 ); sloth1R.spriteSheet = 'assets/sequences/sloth_2.png'; sloth1R.anis.frameDelay = 10; 
 	sloth1R.addAnis({ ClockW: { row: 0, frames: 10 }, ClockWfreeze: { row: 0, frames: 1 }, AntiClockW: { row: 1, frames: 10 }, AntiClockWfreeze: { row: 1, frames: 1 }}); sloth1R.changeAni('ClockWfreeze');
 	 
-  sloth1L = new Sprite(0, 0, 446, 446 ); sloth1L.spriteSheet = 'assets/sequences/sloth_2.png'; sloth1L.anis.frameDelay = 10; 
+    sloth1L = new Sprite(0, 0, 446, 446 ); sloth1L.spriteSheet = 'assets/sequences/sloth_2.png'; sloth1L.anis.frameDelay = 10; 
 	sloth1L.addAnis({ ClockW: { row: 0, frames: 10 }, ClockWfreeze: { row: 0, frames: 1 }, AntiClockW: { row: 1, frames: 10 }, AntiClockWfreeze: { row: 1, frames: 1 }}); sloth1R.changeAni('AntiClockWfreeze');
 
 	sloth2R = new Sprite(0, 0, 212, 190 ); sloth2R.spriteSheet = 'assets/sequences/sloth_1.png'; sloth2R.anis.frameDelay = 10; 
@@ -171,13 +171,13 @@ function preload() {
 	lion2.addAnis({ idle: { row: 0, frames: 10 }, active: { row: 1, frames: 10 }}); lion2.changeAni('idle'); 
 }
 
-/*function keyPressed() {
+function keyPressed() {
 	if (key === 'd') {
 	  debugMode = !debugMode;
 	  allSprites.debug = !allSprites.debug;  
 	  console.log("debugMode:", debugMode);
 	}
-} */
+} 
 
 function setup() {
 
@@ -190,27 +190,34 @@ textAlign(CENTER, TOP);
 
 // Initialise TileWidth -> Spawning Bounding Boxes based on window size
 if (windowWidth <= 600){
-	//console.log("XS Size detected"); 
+	console.log("XS Size detected"); 
 	TileWidth = 240;
-	camera.y = 452;
+	camera.y = 546;
 	SpawnMulti = 1;
 
-} else if (windowWidth >= 600 && windowWidth <= 1100) {
-	//console.log("Small Size detected"); 
+} else if (windowWidth >= 600 && windowWidth <= 1023) {
+	console.log("Small Size detected"); 
 	TileWidth = 480;
-	camera.y = 565;
+	camera.y = 775;
 	SpawnMulti = 2;
 
-} else if (windowWidth >= 1100 && windowWidth <= 2559) {
-	//console.log("Large Size detected");
-	TileWidth = (width / 1.5)- 10;
-	camera.y = 495;
-	SpawnMulti = 5;
-} else {
-	//console.log("Ultra Wide Size detected");
-	TileWidth = (width / 1.5)- 10;
-	camera.y = 495;
-	SpawnMulti = 5;
+} else if (windowWidth >= 1023 && windowWidth <= 1339) {
+	console.log("Medium Size detected");
+	TileWidth = 480;
+	camera.y = 788;
+	SpawnMulti = 2;
+
+} else if (windowWidth >= 1339 && windowWidth <= 2559) {
+	console.log("Large Size detected");
+	TileWidth = (width / 1.5)- 310;
+	camera.y = 775;
+	SpawnMulti = 3;
+
+} else if (windowWidth >= 2560) {
+	console.log("Ultra Wide Size detected");
+	TileWidth = (width / 1.5)-1100;
+	camera.y = 907;
+	SpawnMulti = 3;
 }
 
 
@@ -351,12 +358,14 @@ tower1 = new Sprite();
 tower1.y = tilesGroup[7].y - tilesGroup[7].y/4; tower1.x = windowWidth/18;
 tower1.collider = 'none'; tower1.layer = 1;  
 tower1.image = 'assets/building_' + floor(random(1, 6)) + '.png'; 
+tower1.height = tilesGroup[7].height*8;
 
 // Right-side Tower 2
 tower2 = new Sprite(); 
 tower2.y = tilesGroup[7].y - tilesGroup[7].y/4; tower2.x = windowWidth - windowWidth/18;
 tower2.collider = 'none'; tower2.layer = 1;  
 tower2.image = 'assets/building_' + floor(random(1, 6)) + '.png'; 
+tower2.height = tilesGroup[7].height*8;
 
 // Add more towers if longer width
 if (windowWidth > 1300){
@@ -365,11 +374,13 @@ if (windowWidth > 1300){
 	tower3.y = tilesGroup[7].y - tilesGroup[7].y/4; tower3.x = windowWidth - windowWidth/5;
 	tower3.collider = 'none'; tower3.layer = 1;
 	tower3.image = 'assets/building_' + floor(random(1, 6)) + '.png';
+	tower3.height = tilesGroup[7].height*8;
 
 	tower4 = new Sprite(); 
 	tower4.y = tilesGroup[7].y - tilesGroup[7].y/4; tower4.x = windowWidth/5;
 	tower4.collider = 'none'; tower4.layer = 1;
 	tower4.image = 'assets/building_' + floor(random(1, 6)) + '.png';
+	tower4.height = tilesGroup[7].height*8;
 } else if (windowWidth > 2000){
 
 }
@@ -988,27 +999,29 @@ function touchMoved() {
 }
 
 function ultrawideScreenSettings() {
-	TileWidth = (width / 1.5)- 10;
-	playarea.w = (width / 1.5)- 10;
-    MinScaleX = 0.3;
+
+	camera.zoom = 2.7;
+	bricks.w = 650;
+	TileWidth = (width / 1.5)-1100;
+	playarea.w = (width / 1.5)-1100;
+    MinScaleX = 0.1;
 	sensitivity = 0.8;
 
-	camera.zoom = 2;
-
-	if (camera.y <= 220) {
-		camera.y = 220
+	
+	if (camera.y <= 22) {
+		camera.y = 22
 	} // Top Limit
 
-	if (camera.y >= 925 ) {
-		camera.y = 925
+	if (camera.y >= 951 ) {
+		camera.y = 951
 	} // Bottom Limit
 
-	if (camera.x <= 600 ) {
-		camera.x = 600
+	if (camera.x <= 993 ) {
+		camera.x = 993
 	} // Left Limit
 
-	if (camera.x >= 1960 ) {
-		camera.x = 1960
+	if (camera.x >= 1581 ) {
+		camera.x = 1581
 	} // Right Limit
 
 }
@@ -1016,59 +1029,85 @@ function ultrawideScreenSettings() {
 
 function largeScreenSettings() {
 
-	TileWidth = (width / 1.5)- 10;
-	playarea.w = (width / 1.5)- 10;
-    MinScaleX = 0.3;
+	camera.zoom = 1.6;
+	bricks.w = 650;
+	TileWidth = (width / 1.5)- 310;
+	playarea.w = (width / 1.5)- 310;
+    MinScaleX = 0.2;
 	sensitivity = 0.8;
 	
-	//Zoomed In - XL
-	camera.zoom = 2;
-
-	if (camera.y <= 220) {
-		camera.y = 220
+	if (camera.y <= 223) {
+		camera.y = 223
 	} // Top Limit
 
-	if (camera.y >= 925 ) {
-		camera.y = 925
+	if (camera.y >= 904 ) {
+		camera.y = 904
 	} // Bottom Limit
 
-	if (camera.x <= 461 ) {
-		camera.x = 461
+	if (camera.x <= 674 ) {
+		camera.x = 674
 	} // Left Limit
 
-	if (camera.x >= 1450 ) {
-		camera.x = 1450
+	if (camera.x >= 793 ) {
+		camera.x = 793
 	} // Right Limit
+	 
 	}
 
-
-function smallScreenSettings() {
-	camera.zoom = 2;
+function mediumScreenSettings() {
+	camera.zoom = 1.6;
 	sensitivity = 0.8;
 
-	bricks.w = 500;
+	bricks.w = 490;
 	playarea.w = 500-width/150;
 	MinScaleX = 1.4;
 
-	if (camera.y <= 170 ) {
-		camera.y = 170
+
+	if (camera.y <= 400 ) {
+		camera.y = 400
 	} // Top Limit
 
-	if (camera.y >= 852 ) {
-		camera.y = 852
+	if (camera.y >= 1023 ) {
+		camera.y = 1023
 	} // Bottom Limit
 
-	if (camera.x <= 209 ) {
-		camera.x = 209
+	if (camera.x <= 490 ) {
+		camera.x = 490
 	} // Left Limit
 
-	if (camera.x >= 573 ) {
-		camera.x = 573
+	if (camera.x >= 544 ) {
+		camera.x = 544
 	} // Right Limit
+
+}
+function smallScreenSettings() {
+	camera.zoom = 1.2;
+	sensitivity = 0.8;
+
+	bricks.w = 490;
+	playarea.w = 500-width/150;
+	MinScaleX = 1.4;
+
+	if (camera.y <= 395 ) {
+		camera.y = 395
+	} // Top Limit
+
+	if (camera.y >= 710 ) {
+		camera.y = 710
+	} // Bottom Limit
+
+	if (camera.x <= 367 ) {
+		camera.x = 367
+	} // Left Limit
+
+	if (camera.x >= 399 ) {
+		camera.x = 399
+	} // Right Limit 
+
 }
 
 function xsScreenSettings() {
-		camera.zoom = 2;
+		camera.zoom = 1.2;
 		sensitivity = 0.6;
 
 	    let xsWidth= 125*2;
@@ -1076,21 +1115,23 @@ function xsScreenSettings() {
 		playarea.w = 245;
 		MinScaleX = 0.1;
 
-		if (camera.y <= 190 ) {
-			camera.y = 190
+
+		if (camera.y <= 31 ) {
+			camera.y = 311
 		} // Top Limit
 
-		if (camera.y >= 680 ) {
-			camera.y = 680
+		if (camera.y >= 555) {
+			camera.y = 555
 		} // Bottom Limit
 
-		if (camera.x <= 99 ) {
-			camera.x = 99
+		if (camera.x <= 169 ) {
+			camera.x = 169
 		} // Left Limit
 	
-		if (camera.x >= 295 ) {
-			camera.x = 295
+		if (camera.x >= 217 ) {
+			camera.x = 217
 		} // Right Limit
+
 	}
 
 
@@ -1102,30 +1143,34 @@ function xsScreenSettings() {
 
 function draw() {
 
-	//console.log ("Camera X:" + camera.x);
-	//console.log ("Camera Y:" + camera.y);
+	console.log ("Camera X:" + camera.x);
+	console.log ("Camera Y:" + camera.y);
 	//console.log ("Zoom Level:" + ZoomLevel);
 
-	if (kb.presses('z')) {
-		ZoomLevel = ZoomLevel === 0 ? 1 : 0;
-		//console.log("zoom toggled");
-	}
 
 // Camera Settings
 if (windowWidth <= 600){
     xsScreenSettings();
-} else if (windowWidth >= 600 && windowWidth <= 1100) {
+	//Phone
+} else if (windowWidth >= 600 && windowWidth <= 1023) {
 	smallScreenSettings();
-} else if (windowWidth >= 1100 && windowWidth <= 2000) {
+	//Tablet
+} else if (windowWidth >= 1023 && windowWidth <= 1339) {
+	mediumScreenSettings();
+	//Small Laptop
+} else if (windowWidth >= 1339 && windowWidth <= 2559) {
 	largeScreenSettings();
-} else {
+	//Large Laptop
+} else if (windowWidth >= 2560) {
 	ultrawideScreenSettings();
 }
 
 
-       if (mouse.presses() && cheeseToggle == 1){ cheeseToggle = 2; SpawnCheese1();
-} else if (mouse.presses() && cheeseToggle == 2){ cheeseToggle = 3; SpawnCheese2();
-} else if (mouse.presses() && cheeseToggle == 3){ cheeseToggle = 1; SpawnCheese3(); }
+if (mouse.presses() && !mouse.dragged()) {
+    if (cheeseToggle == 1){ cheeseToggle = 2; SpawnCheese1();
+    } else if (cheeseToggle == 2){ cheeseToggle = 3; SpawnCheese2();
+    } else if (cheeseToggle == 3){ cheeseToggle = 1; SpawnCheese3(); }
+}
 
 
 
