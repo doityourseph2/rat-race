@@ -47,7 +47,7 @@ function LiftRandomise() {
 
 
 function preload() {
-	// defaultImageScale(1);
+	defaultImageScale(1);
 
 	adLibFont = loadFont('adlib.ttf');
 
@@ -1059,7 +1059,7 @@ function mediumScreenSettings() {
 	sensitivity = 0.8;
 
 	bricks.w = 490;
-	playarea.w = 500-width/150;
+	playarea.w = 485;
 	MinScaleX = 1.4;
 
 
@@ -1085,7 +1085,7 @@ function smallScreenSettings() {
 	sensitivity = 0.8;
 
 	bricks.w = 490;
-	playarea.w = 500-width/150;
+	playarea.w = 485;
 	MinScaleX = 1.4;
 
 	if (camera.y <= 395 ) {
@@ -1110,8 +1110,7 @@ function xsScreenSettings() {
 		camera.zoom = 1.2;
 		sensitivity = 0.6;
 
-	    let xsWidth= 125*2;
-		bricks.w = xsWidth;
+		bricks.w = 250;
 		playarea.w = 245;
 		MinScaleX = 0.1;
 
