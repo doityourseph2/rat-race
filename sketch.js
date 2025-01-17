@@ -192,32 +192,27 @@ textAlign(CENTER, TOP);
 if (windowWidth <= 600){
 	console.log("XS Size detected"); 
 	TileWidth = 240;
-	camera.y = 546;
 	SpawnMulti = 1;
 
 } else if (windowWidth >= 600 && windowWidth <= 1023) {
 	console.log("Small Size detected"); 
-	TileWidth = 480;
-	camera.y = 775;
-	SpawnMulti = 2;
+	TileWidth = 380;
+	SpawnMulti = 1.5;
 
 } else if (windowWidth >= 1023 && windowWidth <= 1339) {
 	console.log("Medium Size detected");
 	TileWidth = 480;
-	camera.y = 788;
-	SpawnMulti = 2;
+	SpawnMulti = 1.8;
 
 } else if (windowWidth >= 1339 && windowWidth <= 2559) {
 	console.log("Large Size detected");
-	TileWidth = 650;
-	camera.y = 775;
-	SpawnMulti = 3;
+	TileWidth = 630;
+	SpawnMulti = 2;
 
 } else if (windowWidth >= 2560) {
 	console.log("Ultra Wide Size detected");
 	TileWidth = 606;
-	camera.y = 907;
-	SpawnMulti = 3;
+	SpawnMulti = 2.5;
 }
 
 
@@ -266,8 +261,8 @@ cloud7.image = 'assets/cloud_' + floor(random(2, 9))+ '.png'; cloud7.width = win
 	
 // Building Generation
 bricks = new Group();
-bricks.w = width / 1.5;
-bricks.h = height/9;
+bricks.w = 500;
+bricks.h = 116;
 bricks.tile = '=';
 bricks.textColor = 'white';
 bricks.textSize = height/10;
@@ -286,6 +281,13 @@ tilesGroup = new Tiles(
 	],
 	width/2, height/9+(height/30)-(height/60), bricks.w + 4, bricks.h + 4, 20, 20
 ); tilesGroup.shape = "chain";
+
+// initial camera y position
+if (windowWidth <= 600){
+	camera.y = bricks[4].y;
+} else {
+	camera.y = bricks[6].y;
+}
 
 /* tilesGroup.text = (i) => i; */
 // ^--- Older Block Text Inserts,
@@ -962,195 +964,112 @@ function touchStart(event) {
   }
 
 function mouseWheel(e) {
+	if (windowWidth <= 600){
     camera.x += e.deltaX;
-    camera.y += e.deltaY;
+	}
+	camera.y += e.deltaY;
 
-    if (kb.pressing('alt')) {
-        camera.zoom -= e.deltaY * 0.01;
-    }
-
+	if (kb.pressing('alt')) {
+		camera.zoom -= e.deltaY * 0.01;
+	}
 }
 
 function touchStarted() {
-    //console.log("touch started");
-    touchStartX = touches[0].x;
-    touchStartY = touches[0].y;
+	//console.log("touch started");
+	touchStartX = touches[0].x;
+	touchStartY = touches[0].y;
 }
 
 
 
 function touchMoved() {
-    let touchX = touches[0].x;
-    let touchY = touches[0].y;
+	let touchX = touches[0].x;
+	let touchY = touches[0].y;
 
-    let deltaX = (touchX - touchStartX) * sensitivity;
-    let deltaY = (touchY - touchStartY) * sensitivity;
+	let deltaX = (touchX - touchStartX) * sensitivity;
+	let deltaY = (touchY - touchStartY) * sensitivity;
 
-    if (invertControls) {
-        deltaX = -deltaX;
-        deltaY = -deltaY;
-    }
+	if (invertControls) {
+			deltaX = -deltaX;
+			deltaY = -deltaY;
+	}
 
-    camera.x += deltaX;
-    camera.y += deltaY;
+	camera.x += deltaX;
+	camera.y += deltaY;
 
-    touchStartX = touchX;
-    touchStartY = touchY;
+	touchStartX = touchX;
+	touchStartY = touchY;
 }
 
 function ultrawideScreenSettings() {
 
-	camera.zoom = 2.7;
+	camera.zoom = 2;
 	bricks.w = 650;
 	TileWidth = 606;
-	playarea.w = 606;
-    MinScaleX = 0.1;
+	playarea.w = 645;
+  MinScaleX = 0.1;
 	sensitivity = 0.8;
 
-	
-	if (camera.y <= 22) {
-		camera.y = 22
-	} // Top Limit
-
-	if (camera.y >= 951 ) {
-		camera.y = 951
-	} // Bottom Limit
-
-	if (camera.x <= 993 ) {
-		camera.x = 993
-	} // Left Limit
-
-	if (camera.x >= 1581 ) {
-		camera.x = 1581
-	} // Right Limit
-
+	camera.x = bricks[0].x;
 }
 
 
 function largeScreenSettings() {
 
-	camera.zoom = 1.6;
+	camera.zoom = 2;
 	bricks.w = 650;
 	TileWidth = 650;
-	playarea.w = 650;
-    MinScaleX = 0.2;
+	playarea.w = 645;
+  MinScaleX = 0.2;
 	sensitivity = 0.8;
-	
-	if (camera.y <= 223) {
-		camera.y = 223
-	} // Top Limit
-
-	if (camera.y >= 904 ) {
-		camera.y = 904
-	} // Bottom Limit
-
-	if (camera.x <= 674 ) {
-		camera.x = 674
-	} // Left Limit
-
-	if (camera.x >= 793 ) {
-		camera.x = 793
-	} // Right Limit
-	 
-	}
+}
 
 function mediumScreenSettings() {
-	camera.zoom = 1.6;
+	camera.zoom = 1.8;
 	sensitivity = 0.8;
 
-	bricks.w = 490;
-	playarea.w = 485;
+	bricks.w = 500;
+	playarea.w = 495;
 	MinScaleX = 1.4;
 
-
-	if (camera.y <= 400 ) {
-		camera.y = 400
-	} // Top Limit
-
-	if (camera.y >= 1023 ) {
-		camera.y = 1023
-	} // Bottom Limit
-
-	if (camera.x <= 490 ) {
-		camera.x = 490
-	} // Left Limit
-
-	if (camera.x >= 544 ) {
-		camera.x = 544
-	} // Right Limit
-
+	camera.x = bricks[0].x;
 }
+
 function smallScreenSettings() {
-	camera.zoom = 1.2;
+	camera.zoom = 1.5;
 	sensitivity = 0.8;
 
-	bricks.w = 490;
-	playarea.w = 485;
+	bricks.w = 400;
+	playarea.w = 390;
 	MinScaleX = 1.4;
 
-	if (camera.y <= 395 ) {
-		camera.y = 395
-	} // Top Limit
-
-	if (camera.y >= 710 ) {
-		camera.y = 710
-	} // Bottom Limit
-
-	if (camera.x <= 367 ) {
-		camera.x = 367
-	} // Left Limit
-
-	if (camera.x >= 399 ) {
-		camera.x = 399
-	} // Right Limit 
-
+	camera.x = bricks[0].x;
 }
 
 function xsScreenSettings() {
-		camera.zoom = 1.2;
-		sensitivity = 0.6;
+	camera.zoom = 1.2;
+	sensitivity = 0.6;
 
-		bricks.w = 250;
-		playarea.w = 245;
-		MinScaleX = 0.1;
+	bricks.w = 250;
+	playarea.w = 245;
+	MinScaleX = 0.1;
+}
 
-
-		if (camera.y <= 31 ) {
-			camera.y = 311
-		} // Top Limit
-
-		if (camera.y >= 555) {
-			camera.y = 555
-		} // Bottom Limit
-
-		if (camera.x <= 169 ) {
-			camera.x = 169
-		} // Left Limit
-	
-		if (camera.x >= 217 ) {
-			camera.x = 217
-		} // Right Limit
-
-	}
-
-
-
-// TODO: enable dynamic resizing
-// function windowResized() {
-// 	resizeCanvas(windowWidth, windowHeight);
-// }
+function windowResized() {
+	resizeCanvas(windowWidth, windowHeight);
+}
 
 function draw() {
 
-	console.log ("Camera X:" + camera.x);
-	console.log ("Camera Y:" + camera.y);
-	console.log (TileWidth);
-	//console.log ("Zoom Level:" + ZoomLevel);
+console.log ("Camera X:" + camera.x);
+console.log ("Camera Y:" + camera.y);
+console.log (TileWidth);
+//console.log ("Zoom Level:" + ZoomLevel);
 
 
 // Camera Settings
 if (windowWidth <= 600){
-    xsScreenSettings();
+	xsScreenSettings();
 	//Phone
 } else if (windowWidth >= 600 && windowWidth <= 1023) {
 	smallScreenSettings();
@@ -1165,11 +1084,25 @@ if (windowWidth <= 600){
 	ultrawideScreenSettings();
 }
 
+// no horizontal scrolling
+camera.x = bricks[0].x;
+
+// top Limit
+if (camera.y < bricks[0].y ) {
+	camera.y = bricks[0].y
+}
+
+// bottom limit
+if (camera.y > bricks[7].y) {
+	camera.y = bricks[7].y
+}
 
 if (mouse.presses() && !mouse.dragged()) {
-    if (cheeseToggle == 1){ cheeseToggle = 2; SpawnCheese1();
-    } else if (cheeseToggle == 2){ cheeseToggle = 3; SpawnCheese2();
-    } else if (cheeseToggle == 3){ cheeseToggle = 1; SpawnCheese3(); }
+	if (mouse.y > bricks[0].y - bricks[0].hh && mouse.y < bricks[7].y + bricks[7].hh) {
+		if (cheeseToggle == 1){ cheeseToggle = 2; SpawnCheese1();
+		} else if (cheeseToggle == 2){ cheeseToggle = 3; SpawnCheese2();
+		} else if (cheeseToggle == 3){ cheeseToggle = 1; SpawnCheese3(); }
+	}
 }
 
 
