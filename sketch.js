@@ -37,7 +37,7 @@ let bgmTimer = 0; let ambianceTimer = 0; let stepperTimer = 0;
 let TileWidth = 0; let tileHeight = 0; minorAdjustment = 0; propScalingBasis = 0;
 let MobileView = 0; let ZoomLevel = 0; let CheeseEvent = 0; let CheeseTimer = 0; let SpawnMulti = 0;
 let touchStartDistance; let sensitivity = 0.0; let invertControls = true;
-let touchStartX, touchStartY; let touchMoveX, touchMoveY; let touchEndX, touchEndY;
+let touchStartX = 0, touchStartY = 0; let touchMoveX, touchMoveY; let touchEndX, touchEndY;
 let LiftGenAdjustment = 0;
 
 // Lift Option Split Randomiser
@@ -539,7 +539,7 @@ lv1Sofa.y = (i) => random((tilesGroup[7].y + tilesGroup[7].height/2), (tilesGrou
 lv1Web = new props.Group(); lv1Web.image = 'assets/right_web.png'; 
 lv1Web.scale = 0.3; lv1Web.image.scale = propsImageScaling; 
 lv1Web.width = (propsYScaling)*140; lv1Web.height = (propsYScaling)*71; lv1Web.amount = floor(random(1, 1)); 
-lv1Web.x = (tilesGroup[7].x + TileWidth/2 - lv1Web.width/8); lv1Web.collider = "none";
+lv1Web.x = (tilesGroup[7].x + TileWidth/2 - lv1Web.width/8+10); lv1Web.collider = "none";
 lv1Web.y = tilesGroup[7].y - tilesGroup[7].height/2.5;
 
 // Spider x2 ( lv1spider ), Random Top Mounted
@@ -1026,7 +1026,6 @@ function touchStarted() {
 }
 
 
-
 function touchMoved() {
 	let touchX = touches[0].x;
 	let touchY = touches[0].y;
@@ -1148,9 +1147,6 @@ if (mouse.presses() && !mouse.dragged()) {
     } else if (cheeseToggle == 2){ cheeseToggle = 3; SpawnCheese2();
     } else if (cheeseToggle == 3){ cheeseToggle = 1; SpawnCheese3(); }
 }
-
-
-
 // Initialise World Variables
 background('#ede7fd');
 world.gravity.y = 11;
@@ -1619,10 +1615,34 @@ RandomEvent4++; if (RandomEvent4>= 30) { RandomEvent4 = 0;
 		case 3: Lion1Active(); break; case 4: Lion1Active(); break; }} */
 
 // Cheese Spawning Functions
-function SpawnCheese1() { new cheese1.Sprite(touches[0].x, touches[0].y, lift.w/2, lift.w/2);}
-function SpawnCheese2() { new cheese2.Sprite(touches[0].x, touches[0].y, lift.w/2, lift.w/2);}
-function SpawnCheese3() { new cheese3.Sprite(touches[0].x, touches[0].y, lift.w/2, lift.w/2);}
+function getInputPosition() {
+    if (isTouchDevice = true && touches.length > 0) {  // Check if touches array exists and has elements
+        return {
+            x: touches[0].x,
+            y: touches[0].y
+        };
+    } else {
+        return {
+            x: mouse.x,
+            y: mouse.y
+        };
+    }
+}
 
+function SpawnCheese1() {
+    let pos = getInputPosition();
+    new cheese1.Sprite(pos.x, pos.y, lift.w/2, lift.w/2);
+}
+
+function SpawnCheese2() {
+    let pos = getInputPosition();
+    new cheese2.Sprite(pos.x, pos.y, lift.w/2, lift.w/2);
+}
+
+function SpawnCheese3() {
+    let pos = getInputPosition();
+    new cheese3.Sprite(pos.x, pos.y, lift.w/2, lift.w/2);
+}
 // DICE CONTROLLER ARRAY FUNCTIONS -> SPAWN CHEESE ON DIFFERENT LEVELS
 if (kb.presses('1')) { if ( KBinput !== 1 ) {SpawnLv1cheese(); KBinput=1; spawnCheesesfx.play() } else {} }
 if (kb.presses('2')) { if ( KBinput !== 2 ) {SpawnLv2cheese(); KBinput=2; spawnCheesesfx.play() } else {} }
