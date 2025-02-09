@@ -31,7 +31,7 @@ let KBinput = 0; let debugMode = false;
 let BeeCollide = 0; 
 let adLibFont;
 //SFX Timing
-let bgmTimer = 0; let ambianceTimer = 0; let stepperTimer = 0;
+let ambianceTimer = 0; let stepperTimer = 0; let initial2 = 0; let bgmTimer = 0; 
 
 //Mobile Camera System
 let TileWidth = 0; let tileHeight = 0; minorAdjustment = 0; propScalingBasis = 0;
@@ -39,6 +39,8 @@ let MobileView = 0; let ZoomLevel = 0; let CheeseEvent = 0; let CheeseTimer = 0;
 let touchStartDistance; let sensitivity = 0.0; let invertControls = true;
 let touchStartX = 0, touchStartY = 0; let touchMoveX, touchMoveY; let touchEndX, touchEndY;
 let LiftGenAdjustment = 0;
+
+
 
 // Lift Option Split Randomiser
 function LiftRandomise() {
@@ -183,6 +185,7 @@ function keyPressed() {
 
 function setup() {
 
+userStartAudio();
 new Canvas(windowWidth, windowHeight);
 displayMode('maxed');
 frameRate(60);
@@ -260,6 +263,7 @@ if (windowHeight <= 300){
 	// Gradient Background,
 	gradient = new Sprite();
     gradient.x = windowWidth/2; gradient.y = windowHeight/2;
+	gradient.w = windowWidth; gradient.h = windowHeight;
     gradient.collider = 'none'; gradient.layer = 0;
     gradient.image = 'assets/gradient_bg.png'; gradient.sleeping = true;
 
@@ -1105,7 +1109,7 @@ function windowResized() {
 
 function draw() {
 
-console.log(windowHeight);
+//console.log(windowHeight);
 //console.log ("Camera X:" + camera.x);
 //console.log ("Camera Y:" + camera.y);
 //console.log (TileWidth);
@@ -1147,6 +1151,7 @@ if (mouse.presses() && !mouse.dragged()) {
     } else if (cheeseToggle == 2){ cheeseToggle = 3; SpawnCheese2();
     } else if (cheeseToggle == 3){ cheeseToggle = 1; SpawnCheese3(); }
 }
+
 // Initialise World Variables
 background('#ede7fd');
 world.gravity.y = 11;
@@ -1180,16 +1185,26 @@ lion1.x = random(tilesGroup[0].x - tilesGroup[0].width/10, tilesGroup[0].x - til
 lion2.x = random(tilesGroup[0].x + tilesGroup[0].width/10, tilesGroup[0].x + tilesGroup[0].width/2.7); lion2.y = tilesGroup[0].y+ (tilesGroup[0].h/2)-lion2.h/2;
 
 // SFX ON START, BGM Initialise
-bgmStart(); ambianceStart();
+ambianceStart();
 
 initial = 1; /* SNAP BACK TO REALITY, OOP THERE GOES GRAVITY*/
 }
 
 // BGM Loop
-bgmTimer++; if (bgmTimer >= 4030) { bgmStart(); bgmTimer = 0}
 ambianceTimer++; if (ambianceTimer >= 4010) { ambianceStart(); ambianceTimer = 0}
 /*stepperTimer++; if (stepperTimer >= 50) { Stepper(); stepperTimer = 0;}*/
 
+	//Initialisation of SFX
+    if (initial2 == 0) {
+		playBGM();
+		initial2 = 1;
+	}
+
+	bgmTimer--; //console.log(bgmTimer);
+	if (bgmTimer <= 1) {
+		playBGM();
+		bgmTimer = 12300;
+	} 
 
 // Rat Overlap SFX
 if (rat1.overlaps(rat2)) {Squeaker()} if (rat1.overlaps(rat3)) {Squeaker()} if (rat1.overlaps(rat4)) {Squeaker()}
@@ -1708,7 +1723,9 @@ async function LiftOpen_0() { lyft0.changeAni('opening');
 
 // SFX Functions
 // BGM Play
-async function bgmStart() {await bgm.play()} 
+async function playBGM() {
+	await bgm.stop(); await bgm.play();
+  }
 async function ambianceStart() {await ambiance.play()}
 
 // Wolf Transformations & Lion Roars 
